@@ -8,12 +8,6 @@
 componentTypeFromFolderName() {
     if [[ "$1" = "builders" ]]; then
         echo "builder"
-    elif [[ "$1" = "provisioners" ]]; then
-        echo "provisioner"
-    elif [[ "$1" = "post-processors" ]]; then
-        echo "post-processor"
-    elif [[ "$1" = "datasources" ]]; then
-        echo "data-source"
     else
         echo ""
     fi
@@ -50,10 +44,7 @@ rewriteLinks() {
   # Rewrite the Component URL segment from the Packer Plugin format
   # to the Integrations format
   result="$(echo "$result" \
-      | sed "s/\/datasources\//\/data-source\//g" \
       | sed "s/\/builders\//\/builder\//g" \
-      | sed "s/\/post-processors\//\/post-processor\//g" \
-      | sed "s/\/provisioners\//\/provisioner\//g" \
   )"
 
   echo "$result"

@@ -1,4 +1,4 @@
-NAME=scaffolding
+NAME=kubevirt
 BINARY=packer-plugin-${NAME}
 
 COUNT?=1

@@ -15,8 +15,7 @@ To install this plugin, copy and paste this code into your Packer configuration,
 packer {
   required_plugins {
     name = {
-      # source represents the GitHub URI to the plugin repository without the `packer-plugin-` prefix.
-      source  = "github.com/organization/name"
+      source  = "github.com/hashicorp/kubevirt"
       version = ">=0.0.1"
     }
   }
@@ -26,30 +25,11 @@ packer {
 Alternatively, you can use `packer plugins install` to manage installation of this plugin.
 
 ```sh
-$ packer plugins install github.com/organization/plugin-name
+$ packer plugins install github.com/hashicorp/kubevirt
 ```
 
 ### Components
 
-The Scaffolding plugin is intended as a starting point for creating Packer plugins
-
 #### Builders
 
-- [builder](/packer/integrations/hashicorp/scaffolding/latest/components/builder/builder-name) - The scaffolding builder is used to create endless Packer
-  plugins using a consistent plugin structure.
-
-#### Provisioners
-
-- [provisioner](/packer/integrations/hashicorp/scaffolding/latest/components/provisioner/provisioner-name) - The scaffolding provisioner is used to provisioner
-  Packer builds.
-
-#### Post-processors
-
-- [post-processor](/packer/integrations/hashicorp/scaffolding/latest/components/post-processor/postprocessor-name) - The scaffolding post-processor is used to
-  export scaffolding builds.
-
-#### Data Sources
-
-- [data source](/packer/integrations/hashicorp/scaffolding/latest/components/datasource/datasource-name) - The scaffolding data source is used to
-  export scaffolding data.
-
+- [kubevirt-clone](/packer/integrations/hashicorp/kubevirt/latest/components/builder/kubevirt-clone) - This builder clones a virtual machine from an existing template and then modifies and saves it as a new template.
