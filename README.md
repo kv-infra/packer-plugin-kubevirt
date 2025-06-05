@@ -7,10 +7,10 @@ KubeVirt plugin can be used with HashiCorp Packer to create KubeVirt images.
 Run this command from the root directory:
 
 ```shell
-$ go build -ldflags="-X github.com/codingben/packer-plugin-kubevirt/version.VersionPrerelease=dev" -o packer-plugin-kubevirt
+$ go build -ldflags="-X github.com/kubevirt-infra/packer-plugin-kubevirt/version.VersionPrerelease=dev" -o packer-plugin-kubevirt
 ```
 
 To install the compiled plugin, run the following command:
 ```shell
-$ packer plugins install --path packer-plugin-kubevirt github.com/codingben/kubevirt
+$ packer plugins install --path packer-plugin-kubevirt github.com/kubevirt-infra/kubevirt
 ```

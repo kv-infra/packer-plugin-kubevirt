@@ -4,11 +4,11 @@
 integration {
   name = "KubeVirt"
   description = "The KubeVirt plugin can be used with HashiCorp Packer to create KubeVirt images."
-  identifier = "packer/hashicorp/kubevirt"
+  identifier = "packer/kubevirt-infra/kubevirt"
   flags = [""]
   component {
     type = "builder"
-    name = "KubeVirt Clone"
-    slug = "kubevirt-clone"
+    name = "KubeVirt ISO"
+    slug = "kubevirt-iso"
   }
 }

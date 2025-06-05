@@ -14,8 +14,8 @@ To install this plugin, copy and paste this code into your Packer configuration,
 ```hcl
 packer {
   required_plugins {
-    name = {
-      source  = "github.com/hashicorp/kubevirt"
+    kubevirt = {
+      source  = "github.com/kubevirt-infra/kubevirt"
       version = ">=0.0.1"
     }
   }
@@ -25,11 +25,11 @@ packer {
 Alternatively, you can use `packer plugins install` to manage installation of this plugin.
 
 ```sh
-$ packer plugins install github.com/hashicorp/kubevirt
+$ packer plugins install github.com/kubevirt-infra/kubevirt
 ```
 
 ### Components
 
 #### Builders
 
-- [kubevirt-clone](/packer/integrations/hashicorp/kubevirt/latest/components/builder/kubevirt-clone) - This builder clones a virtual machine from an existing template and then modifies and saves it as a new template.
+- [kubevirt-iso](/packer/integrations/kubevirt-infra/kubevirt/latest/components/builder/kubevirt-iso) - This builder starts from a ISO file and builds virtual machine image on a KubeVirt cluster.

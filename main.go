@@ -7,14 +7,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/codingben/packer-plugin-kubevirt/builder/kubevirt/clone"
-	"github.com/codingben/packer-plugin-kubevirt/version"
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
+	"github.com/kubevirt-infra/packer-plugin-kubevirt/version"
 )
 
 func main() {
 	setup := plugin.NewSet()
-	setup.RegisterBuilder("kubevirt-clone", new(clone.Builder))
 	setup.SetVersion(version.PluginVersion)
 
 	if err := setup.Run(); err != nil {
