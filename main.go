@@ -8,11 +8,13 @@ import (
 	"os"
 
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
+	"github.com/kubevirt-infra/packer-plugin-kubevirt/builder/kubevirt/iso"
 	"github.com/kubevirt-infra/packer-plugin-kubevirt/version"
 )
 
 func main() {
 	setup := plugin.NewSet()
+	setup.RegisterBuilder("iso", new(iso.Builder))
 	setup.SetVersion(version.PluginVersion)
 
 	if err := setup.Run(); err != nil {
