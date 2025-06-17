@@ -25,10 +25,11 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 
 	name := s.config.Name
 	namespace := s.config.Namespace
+	isoVolumeName := s.config.IsoVolumeName
 	diskSize := s.config.DiskSize
 	instanceTypeName := s.config.InstanceType
 	preferenceName := s.config.Preference
-	v1VirtualMachine := virtualMachine(name, diskSize, instanceTypeName, preferenceName)
+	v1VirtualMachine := virtualMachine(name, isoVolumeName, diskSize, instanceTypeName, preferenceName)
 
 	_, err := s.client.VirtualMachine(namespace).Create(ctx, v1VirtualMachine, metav1.CreateOptions{})
 	if err != nil {

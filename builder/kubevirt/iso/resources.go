@@ -13,35 +13,7 @@ import (
 	cdiv1 "kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 )
 
-func isoVolume(name, isoUrl, isoSize string) *cdiv1.DataVolume {
-	return &cdiv1.DataVolume{
-		TypeMeta: metav1.TypeMeta{
-			APIVersion: cdiv1.CDIGroupVersionKind.GroupVersion().String(),
-			Kind:       "DataVolume",
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:        name + "-iso",
-			Annotations: map[string]string{"cdi.kubevirt.io/storage.bind.immediate.requested": "true"},
-		},
-		Spec: cdiv1.DataVolumeSpec{
-			Source: &cdiv1.DataVolumeSource{
-				HTTP: &cdiv1.DataVolumeSourceHTTP{
-					URL: isoUrl,
-				},
-			},
-			PVC: &corev1.PersistentVolumeClaimSpec{
-				Resources: corev1.VolumeResourceRequirements{
-					Requests: corev1.ResourceList{
-						corev1.ResourceName(corev1.ResourceStorage): resource.MustParse(isoSize),
-					},
-				},
-				AccessModes: []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
-			},
-		},
-	}
-}
-
-func virtualMachine(name, diskSize, instanceType, preferenceName string) *v1.VirtualMachine {
+func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName string) *v1.VirtualMachine {
 	cdrom := uint(1)
 	rootdisk := uint(2)
 
@@ -112,7 +84,7 @@ func virtualMachine(name, diskSize, instanceType, preferenceName string) *v1.Vir
 							Name: "cdrom",
 							VolumeSource: v1.VolumeSource{
 								DataVolume: &v1.DataVolumeSource{
-									Name: name + "-iso",
+									Name: isoVolumeName,
 								},
 							},
 						},

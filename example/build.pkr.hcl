@@ -15,23 +15,19 @@ variable "kube_config" {
   default = "${env("KUBECONFIG")}"
 }
 
-variable "iso_url" {
-  type = string
-}
-
-variable "iso_size" {
-  type = string
-}
-
-variable "disk_size" {
-  type = string
-}
-
 variable "name" {
   type = string
 }
 
 variable "namespace" {
+  type = string
+}
+
+variable "iso_volume_name" {
+  type = string
+}
+
+variable "disk_size" {
   type = string
 }
 
@@ -45,11 +41,10 @@ variable "preference" {
 
 source "kubevirt-iso" "example" {
   kube_config     = var.kube_config
-  iso_url         = var.iso_url
-  iso_size        = var.iso_size
-  disk_size       = var.disk_size
   name            = var.name
   namespace       = var.namespace
+  iso_volume_name = var.iso_volume_name
+  disk_size       = var.disk_size
   instance_type   = var.instance_type
   preference      = var.preference
 }

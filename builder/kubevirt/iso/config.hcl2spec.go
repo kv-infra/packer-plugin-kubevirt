@@ -19,11 +19,10 @@ type FlatConfig struct {
 	PackerUserVars      map[string]string `mapstructure:"packer_user_variables" cty:"packer_user_variables" hcl:"packer_user_variables"`
 	PackerSensitiveVars []string          `mapstructure:"packer_sensitive_variables" cty:"packer_sensitive_variables" hcl:"packer_sensitive_variables"`
 	KubeConfig          *string           `mapstructure:"kube_config" cty:"kube_config" hcl:"kube_config"`
-	IsoUrl              *string           `mapstructure:"iso_url" cty:"iso_url" hcl:"iso_url"`
-	IsoSize             *string           `mapstructure:"iso_size" cty:"iso_size" hcl:"iso_size"`
-	DiskSize            *string           `mapstructure:"disk_size" cty:"disk_size" hcl:"disk_size"`
 	Name                *string           `mapstructure:"name" cty:"name" hcl:"name"`
 	Namespace           *string           `mapstructure:"namespace" cty:"namespace" hcl:"namespace"`
+	IsoVolumeName       *string           `mapstructure:"iso_volume_name" cty:"iso_volume_name" hcl:"iso_volume_name"`
+	DiskSize            *string           `mapstructure:"disk_size" cty:"disk_size" hcl:"disk_size"`
 	InstanceType        *string           `mapstructure:"instance_type" cty:"instance_type" hcl:"instance_type"`
 	Preference          *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
 }
@@ -49,11 +48,10 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"packer_user_variables":      &hcldec.AttrSpec{Name: "packer_user_variables", Type: cty.Map(cty.String), Required: false},
 		"packer_sensitive_variables": &hcldec.AttrSpec{Name: "packer_sensitive_variables", Type: cty.List(cty.String), Required: false},
 		"kube_config":                &hcldec.AttrSpec{Name: "kube_config", Type: cty.String, Required: false},
-		"iso_url":                    &hcldec.AttrSpec{Name: "iso_url", Type: cty.String, Required: false},
-		"iso_size":                   &hcldec.AttrSpec{Name: "iso_size", Type: cty.String, Required: false},
-		"disk_size":                  &hcldec.AttrSpec{Name: "disk_size", Type: cty.String, Required: false},
 		"name":                       &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
 		"namespace":                  &hcldec.AttrSpec{Name: "namespace", Type: cty.String, Required: false},
+		"iso_volume_name":            &hcldec.AttrSpec{Name: "iso_volume_name", Type: cty.String, Required: false},
+		"disk_size":                  &hcldec.AttrSpec{Name: "disk_size", Type: cty.String, Required: false},
 		"instance_type":              &hcldec.AttrSpec{Name: "instance_type", Type: cty.String, Required: false},
 		"preference":                 &hcldec.AttrSpec{Name: "preference", Type: cty.String, Required: false},
 	}

@@ -14,11 +14,9 @@ import (
 	"kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 )
 
-func waitUntilDataVolumeSucceeded(ctx context.Context, client kubecli.KubevirtClient, dataVolume *v1beta1.DataVolume) error {
+func waitUntilDataVolumeSucceeded(ctx context.Context, client kubecli.KubevirtClient, namespace, name string) error {
 	pollInterval := 15 * time.Second
 	pollTimeout := 3600 * time.Second
-	name := dataVolume.Name
-	namespace := dataVolume.Namespace
 	poller := func(ctx context.Context) (bool, error) {
 		dataVolume, err := client.CdiClient().CdiV1beta1().DataVolumes(namespace).Get(ctx, name, metav1.GetOptions{})
 		if err != nil {

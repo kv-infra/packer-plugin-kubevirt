@@ -37,7 +37,7 @@ func (s *StepCreateVirtualMachineTemplate) Run(ctx context.Context, state multis
 		return multistep.ActionHalt
 	}
 
-	if err = waitUntilDataVolumeSucceeded(ctx, s.client, dv); err != nil {
+	if err = waitUntilDataVolumeSucceeded(ctx, s.client, dv.Namespace, dv.Name); err != nil {
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}

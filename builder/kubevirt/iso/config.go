@@ -14,14 +14,13 @@ import (
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 
-	KubeConfig   string `mapstructure:"kube_config"`
-	IsoUrl       string `mapstructure:"iso_url"`
-	IsoSize      string `mapstructure:"iso_size"`
-	DiskSize     string `mapstructure:"disk_size"`
-	Name         string `mapstructure:"name"`
-	Namespace    string `mapstructure:"namespace"`
-	InstanceType string `mapstructure:"instance_type"`
-	Preference   string `mapstructure:"preference"`
+	KubeConfig    string `mapstructure:"kube_config"`
+	Name          string `mapstructure:"name"`
+	Namespace     string `mapstructure:"namespace"`
+	IsoVolumeName string `mapstructure:"iso_volume_name"`
+	DiskSize      string `mapstructure:"disk_size"`
+	InstanceType  string `mapstructure:"instance_type"`
+	Preference    string `mapstructure:"preference"`
 }
 
 func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
