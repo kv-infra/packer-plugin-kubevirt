@@ -36,7 +36,7 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 			DataVolumeTemplates: []v1.DataVolumeTemplateSpec{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name: name + "-volume",
+						Name: name + "-rootdisk",
 					},
 					Spec: cdiv1.DataVolumeSpec{
 						PVC: &corev1.PersistentVolumeClaimSpec{
@@ -92,7 +92,7 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 							Name: "rootdisk",
 							VolumeSource: v1.VolumeSource{
 								DataVolume: &v1.DataVolumeSource{
-									Name: name + "-volume",
+									Name: name + "-rootdisk",
 								},
 							},
 						},
@@ -103,19 +103,19 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 	}
 }
 
-func templateVolume(name, namespace, diskSize string) *cdiv1.DataVolume {
+func cloneVolume(name, namespace, diskSize string) *cdiv1.DataVolume {
 	return &cdiv1.DataVolume{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: cdiv1.CDIGroupVersionKind.GroupVersion().String(),
 			Kind:       "DataVolume",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name: name + "-template",
+			Name: name,
 		},
 		Spec: cdiv1.DataVolumeSpec{
 			Source: &cdiv1.DataVolumeSource{
 				PVC: &cdiv1.DataVolumeSourcePVC{
-					Name:      name + "-volume",
+					Name:      name + "-rootdisk",
 					Namespace: namespace,
 				},
 			},
@@ -131,14 +131,14 @@ func templateVolume(name, namespace, diskSize string) *cdiv1.DataVolume {
 	}
 }
 
-func templateSource(name, namespace, instanceType, preferenceName string) *cdiv1.DataSource {
+func sourceVolume(name, namespace, instanceType, preferenceName string) *cdiv1.DataSource {
 	return &cdiv1.DataSource{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: cdiv1.CDIGroupVersionKind.GroupVersion().String(),
 			Kind:       "DataSource",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name: name + "-source",
+			Name: name,
 			Labels: map[string]string{
 				"instancetype.kubevirt.io/default-instancetype": instanceType,
 				"instancetype.kubevirt.io/default-preference":   preferenceName,
@@ -147,7 +147,7 @@ func templateSource(name, namespace, instanceType, preferenceName string) *cdiv1
 		Spec: cdiv1.DataSourceSpec{
 			Source: cdiv1.DataSourceSource{
 				PVC: &cdiv1.DataVolumeSourcePVC{
-					Name:      name + "-template",
+					Name:      name,
 					Namespace: namespace,
 				},
 			},

@@ -52,7 +52,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			config: b.config,
 			client: b.client,
 		},
-		&StepCreateVirtualMachineTemplate{
+		&StepCreateBootableVolume{
 			config: b.config,
 			client: b.client,
 		},

@@ -14,24 +14,24 @@ import (
 	"kubevirt.io/client-go/kubecli"
 )
 
-type StepCreateVirtualMachineTemplate struct {
+type StepCreateBootableVolume struct {
 	config Config
 	client kubecli.KubevirtClient
 }
 
-func (s *StepCreateVirtualMachineTemplate) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepCreateBootableVolume) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	ui.Say("Creating a new template from VirutalMachine...")
+	ui.Say("Creating a new bootable volume from VirutalMachine...")
 
 	name := s.config.Name
 	namespace := s.config.Namespace
 	diskSize := s.config.DiskSize
 	instanceType := s.config.InstanceType
 	preferenceName := s.config.Preference
-	templateVolume := templateVolume(name, namespace, diskSize)
-	templateSource := templateSource(name, namespace, instanceType, preferenceName)
+	cloneVolume := cloneVolume(name, namespace, diskSize)
+	sourceVolume := sourceVolume(name, namespace, instanceType, preferenceName)
 
-	dv, err := s.client.CdiClient().CdiV1beta1().DataVolumes(namespace).Create(ctx, templateVolume, metav1.CreateOptions{})
+	dv, err := s.client.CdiClient().CdiV1beta1().DataVolumes(namespace).Create(ctx, cloneVolume, metav1.CreateOptions{})
 	if err != nil {
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -42,7 +42,7 @@ func (s *StepCreateVirtualMachineTemplate) Run(ctx context.Context, state multis
 		return multistep.ActionHalt
 	}
 
-	_, err = s.client.CdiClient().CdiV1beta1().DataSources(namespace).Create(ctx, templateSource, metav1.CreateOptions{})
+	_, err = s.client.CdiClient().CdiV1beta1().DataSources(namespace).Create(ctx, sourceVolume, metav1.CreateOptions{})
 	if err != nil {
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -50,6 +50,6 @@ func (s *StepCreateVirtualMachineTemplate) Run(ctx context.Context, state multis
 	return multistep.ActionContinue
 }
 
-func (s *StepCreateVirtualMachineTemplate) Cleanup(state multistep.StateBag) {
+func (s *StepCreateBootableVolume) Cleanup(state multistep.StateBag) {
 	// Left blank intentionally
 }
