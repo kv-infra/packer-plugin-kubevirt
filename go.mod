@@ -1,4 +1,4 @@
-module github.com/kubevirt-infra/packer-plugin-kubevirt
+module github.com/kv-infra/packer-plugin-kubevirt
 
 go 1.23.2
 

@@ -15,11 +15,11 @@ The `KubeVirt` plugin can be used with [HashiCorp Packer](https://www.packer.io)
 Clone this repository and run build from the root directory:
 
 ```shell
-$ go build -ldflags="-X github.com/kubevirt-infra/packer-plugin-kubevirt/version.Version=0.0.1" -o packer-plugin-kubevirt
+$ go build -ldflags="-X github.com/kv-infra/packer-plugin-kubevirt/version.Version=0.0.1" -o packer-plugin-kubevirt
 ```
 
 To install the compiled plugin, run the following command:
 
 ```shell
-$ packer plugins install --path packer-plugin-kubevirt github.com/kubevirt-infra/kubevirt
+$ packer plugins install --path packer-plugin-kubevirt github.com/kv-infra/kubevirt
 ```

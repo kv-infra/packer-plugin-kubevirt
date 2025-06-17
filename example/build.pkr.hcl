@@ -4,7 +4,7 @@
 packer {
   required_plugins {
     kubevirt = {
-      source  = "github.com/kubevirt-infra/kubevirt"
+      source  = "github.com/kv-infra/kubevirt"
       version = ">= 0.0.1"
     }
   }

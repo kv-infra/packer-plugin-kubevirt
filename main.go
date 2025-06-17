@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
-	"github.com/kubevirt-infra/packer-plugin-kubevirt/builder/kubevirt/iso"
-	"github.com/kubevirt-infra/packer-plugin-kubevirt/version"
+	"github.com/kv-infra/packer-plugin-kubevirt/builder/kubevirt/iso"
+	"github.com/kv-infra/packer-plugin-kubevirt/version"
 )
 
 func main() {

@@ -15,7 +15,7 @@ To install this plugin, copy and paste this code into your Packer configuration,
 packer {
   required_plugins {
     kubevirt = {
-      source  = "github.com/kubevirt-infra/kubevirt"
+      source  = "github.com/kv-infra/kubevirt"
       version = ">=0.0.1"
     }
   }
@@ -25,11 +25,11 @@ packer {
 Alternatively, you can use `packer plugins install` to manage installation of this plugin.
 
 ```sh
-$ packer plugins install github.com/kubevirt-infra/kubevirt
+$ packer plugins install github.com/kv-infra/kubevirt
 ```
 
 ### Components
 
 #### Builders
 
-- [kubevirt-iso](/packer/integrations/kubevirt-infra/kubevirt/latest/components/builder/kubevirt-iso) - This builder starts from a ISO file and builds virtual machine image on a KubeVirt cluster.
+- [kubevirt-iso](/packer/integrations/kv-infra/kubevirt/latest/components/builder/kubevirt-iso) - This builder starts from a ISO file and builds virtual machine image on a KubeVirt cluster.
