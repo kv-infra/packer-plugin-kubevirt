@@ -7,6 +7,8 @@
 package iso
 
 import (
+	"time"
+
 	"github.com/hashicorp/packer-plugin-sdk/common"
 	"github.com/hashicorp/packer-plugin-sdk/template/config"
 )
@@ -14,13 +16,15 @@ import (
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 
-	KubeConfig    string `mapstructure:"kube_config"`
-	Name          string `mapstructure:"name"`
-	Namespace     string `mapstructure:"namespace"`
-	IsoVolumeName string `mapstructure:"iso_volume_name"`
-	DiskSize      string `mapstructure:"disk_size"`
-	InstanceType  string `mapstructure:"instance_type"`
-	Preference    string `mapstructure:"preference"`
+	KubeConfig    string        `mapstructure:"kube_config"`
+	Name          string        `mapstructure:"name"`
+	Namespace     string        `mapstructure:"namespace"`
+	IsoVolumeName string        `mapstructure:"iso_volume_name"`
+	DiskSize      string        `mapstructure:"disk_size"`
+	InstanceType  string        `mapstructure:"instance_type"`
+	Preference    string        `mapstructure:"preference"`
+	BootCommand   []string      `mapstructure:"boot_command"`
+	BootWait      time.Duration `mapstructure:"boot_wait"`
 }
 
 func (c *Config) Prepare(raws ...interface{}) ([]string, error) {

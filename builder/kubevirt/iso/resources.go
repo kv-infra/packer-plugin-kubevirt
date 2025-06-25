@@ -15,7 +15,8 @@ import (
 
 func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName string) *v1.VirtualMachine {
 	cdrom := uint(1)
-	rootdisk := uint(2)
+	oemdrv := uint(2)
+	rootdisk := uint(3)
 
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
@@ -68,6 +69,15 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 									BootOrder: &cdrom,
 								},
 								{
+									Name: "oemdrv",
+									DiskDevice: v1.DiskDevice{
+										CDRom: &v1.CDRomTarget{
+											Tray: "closed",
+										},
+									},
+									BootOrder: &oemdrv,
+								},
+								{
 									Name: "rootdisk",
 									DiskDevice: v1.DiskDevice{
 										Disk: &v1.DiskTarget{
@@ -93,6 +103,17 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 							VolumeSource: v1.VolumeSource{
 								DataVolume: &v1.DataVolumeSource{
 									Name: name + "-rootdisk",
+								},
+							},
+						},
+						{
+							Name: "oemdrv",
+							VolumeSource: v1.VolumeSource{
+								ConfigMap: &v1.ConfigMapVolumeSource{
+									LocalObjectReference: corev1.LocalObjectReference{
+										Name: "oemdrv-cm",
+									},
+									VolumeLabel: "OEMDRV",
 								},
 							},
 						},

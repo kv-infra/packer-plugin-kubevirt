@@ -39,6 +39,14 @@ variable "preference" {
   type = string
 }
 
+variable "boot_command" {
+  type = list(string)
+}
+
+variable "boot_wait" {
+  type = string
+}
+
 source "kubevirt-iso" "example" {
   kube_config     = var.kube_config
   name            = var.name
@@ -47,6 +55,8 @@ source "kubevirt-iso" "example" {
   disk_size       = var.disk_size
   instance_type   = var.instance_type
   preference      = var.preference
+  boot_command    = var.boot_command
+  boot_wait       = var.boot_wait
 }
 
 build {

@@ -42,13 +42,16 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
 
 func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (packer.Artifact, error) {
 	steps := []multistep.Step{}
-
 	steps = append(steps,
 		&StepCreateIsoVolume{
 			config: b.config,
 			client: b.client,
 		},
 		&StepCreateVirtualMachine{
+			config: b.config,
+			client: b.client,
+		},
+		&StepBootCommand{
 			config: b.config,
 			client: b.client,
 		},
