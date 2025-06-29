@@ -14,9 +14,9 @@ import (
 )
 
 func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName string) *v1.VirtualMachine {
-	cdrom := uint(1)
-	oemdrv := uint(2)
-	rootdisk := uint(3)
+	rootdisk := uint(1)
+	cdrom := uint(2)
+	oemdrv := uint(3)
 
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
