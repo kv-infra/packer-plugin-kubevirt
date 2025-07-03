@@ -52,7 +52,7 @@ func (s *StepBootCommand) Run(ctx context.Context, state multistep.StateBag) mul
 		return multistep.ActionHalt
 	}
 
-	ui.Say("Typing the boot command over VNC... keep only single VNC connection here!")
+	ui.Say("Typing the boot command over VNC... Keep only single VNC connection here!")
 
 	command, err := interpolate.Render(bootCommand, &interpolate.Context{})
 	if err != nil {

@@ -27,6 +27,10 @@ type FlatConfig struct {
 	Preference          *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
 	BootCommand         []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
 	BootWait            *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
+	Communicator        *string           `mapstructure:"communicator" cty:"communicator" hcl:"communicator"`
+	SSHUsername         *string           `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
+	SSHPassword         *string           `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
+	SSHWaitTimeout      *string           `mapstructure:"ssh_wait_timeout" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -58,6 +62,10 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"preference":                 &hcldec.AttrSpec{Name: "preference", Type: cty.String, Required: false},
 		"boot_command":               &hcldec.AttrSpec{Name: "boot_command", Type: cty.List(cty.String), Required: false},
 		"boot_wait":                  &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},
+		"communicator":               &hcldec.AttrSpec{Name: "communicator", Type: cty.String, Required: false},
+		"ssh_username":               &hcldec.AttrSpec{Name: "ssh_username", Type: cty.String, Required: false},
+		"ssh_password":               &hcldec.AttrSpec{Name: "ssh_password", Type: cty.String, Required: false},
+		"ssh_wait_timeout":           &hcldec.AttrSpec{Name: "ssh_wait_timeout", Type: cty.String, Required: false},
 	}
 	return s
 }

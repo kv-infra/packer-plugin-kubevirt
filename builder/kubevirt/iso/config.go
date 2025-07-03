@@ -16,15 +16,19 @@ import (
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
 
-	KubeConfig    string        `mapstructure:"kube_config"`
-	Name          string        `mapstructure:"name"`
-	Namespace     string        `mapstructure:"namespace"`
-	IsoVolumeName string        `mapstructure:"iso_volume_name"`
-	DiskSize      string        `mapstructure:"disk_size"`
-	InstanceType  string        `mapstructure:"instance_type"`
-	Preference    string        `mapstructure:"preference"`
-	BootCommand   []string      `mapstructure:"boot_command"`
-	BootWait      time.Duration `mapstructure:"boot_wait"`
+	KubeConfig     string        `mapstructure:"kube_config"`
+	Name           string        `mapstructure:"name"`
+	Namespace      string        `mapstructure:"namespace"`
+	IsoVolumeName  string        `mapstructure:"iso_volume_name"`
+	DiskSize       string        `mapstructure:"disk_size"`
+	InstanceType   string        `mapstructure:"instance_type"`
+	Preference     string        `mapstructure:"preference"`
+	BootCommand    []string      `mapstructure:"boot_command"`
+	BootWait       time.Duration `mapstructure:"boot_wait"`
+	Communicator   string        `mapstructure:"communicator"`
+	SSHUsername    string        `mapstructure:"ssh_username"`
+	SSHPassword    string        `mapstructure:"ssh_password"`
+	SSHWaitTimeout time.Duration `mapstructure:"ssh_wait_timeout"`
 }
 
 func (c *Config) Prepare(raws ...interface{}) ([]string, error) {

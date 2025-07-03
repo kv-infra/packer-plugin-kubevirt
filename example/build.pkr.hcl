@@ -47,18 +47,44 @@ variable "boot_wait" {
   type = string
 }
 
+variable "communicator" {
+  type = string
+}
+
+variable "ssh_username" {
+  type = string
+}
+
+variable "ssh_password" {
+  type = string
+}
+
+variable "ssh_wait_timeout" {
+  type = string
+}
+
 source "kubevirt-iso" "example" {
-  kube_config     = var.kube_config
-  name            = var.name
-  namespace       = var.namespace
-  iso_volume_name = var.iso_volume_name
-  disk_size       = var.disk_size
-  instance_type   = var.instance_type
-  preference      = var.preference
-  boot_command    = var.boot_command
-  boot_wait       = var.boot_wait
+  kube_config          = var.kube_config
+  name                 = var.name
+  namespace            = var.namespace
+  iso_volume_name      = var.iso_volume_name
+  disk_size            = var.disk_size
+  instance_type        = var.instance_type
+  preference           = var.preference
+  boot_command         = var.boot_command
+  boot_wait            = var.boot_wait
+  communicator         = var.communicator
+  ssh_username         = var.ssh_username
+  ssh_password         = var.ssh_password
+  ssh_wait_timeout     = var.ssh_wait_timeout
 }
 
 build {
   sources = ["source.kubevirt-iso.example"]
+
+  provisioner "shell" {
+    inline = [
+      "echo 'Run here your custom script with additional configuration.'"
+    ]
+  }
 }
