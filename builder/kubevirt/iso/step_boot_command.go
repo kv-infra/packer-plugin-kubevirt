@@ -30,7 +30,7 @@ func (s *StepBootCommand) Run(ctx context.Context, state multistep.StateBag) mul
 	bootWait := s.config.BootWait
 
 	if int64(bootWait) > 0 {
-		ui.Sayf("Waiting %s seconds to boot...", bootWait.String())
+		ui.Sayf("Waiting %s to boot...", bootWait.String())
 
 		select {
 		case <-time.After(bootWait):

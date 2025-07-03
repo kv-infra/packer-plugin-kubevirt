@@ -10,27 +10,28 @@ import (
 // FlatConfig is an auto-generated flat version of Config.
 // Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
 type FlatConfig struct {
-	PackerBuildName     *string           `mapstructure:"packer_build_name" cty:"packer_build_name" hcl:"packer_build_name"`
-	PackerBuilderType   *string           `mapstructure:"packer_builder_type" cty:"packer_builder_type" hcl:"packer_builder_type"`
-	PackerCoreVersion   *string           `mapstructure:"packer_core_version" cty:"packer_core_version" hcl:"packer_core_version"`
-	PackerDebug         *bool             `mapstructure:"packer_debug" cty:"packer_debug" hcl:"packer_debug"`
-	PackerForce         *bool             `mapstructure:"packer_force" cty:"packer_force" hcl:"packer_force"`
-	PackerOnError       *string           `mapstructure:"packer_on_error" cty:"packer_on_error" hcl:"packer_on_error"`
-	PackerUserVars      map[string]string `mapstructure:"packer_user_variables" cty:"packer_user_variables" hcl:"packer_user_variables"`
-	PackerSensitiveVars []string          `mapstructure:"packer_sensitive_variables" cty:"packer_sensitive_variables" hcl:"packer_sensitive_variables"`
-	KubeConfig          *string           `mapstructure:"kube_config" cty:"kube_config" hcl:"kube_config"`
-	Name                *string           `mapstructure:"name" cty:"name" hcl:"name"`
-	Namespace           *string           `mapstructure:"namespace" cty:"namespace" hcl:"namespace"`
-	IsoVolumeName       *string           `mapstructure:"iso_volume_name" cty:"iso_volume_name" hcl:"iso_volume_name"`
-	DiskSize            *string           `mapstructure:"disk_size" cty:"disk_size" hcl:"disk_size"`
-	InstanceType        *string           `mapstructure:"instance_type" cty:"instance_type" hcl:"instance_type"`
-	Preference          *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
-	BootCommand         []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
-	BootWait            *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
-	Communicator        *string           `mapstructure:"communicator" cty:"communicator" hcl:"communicator"`
-	SSHUsername         *string           `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
-	SSHPassword         *string           `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
-	SSHWaitTimeout      *string           `mapstructure:"ssh_wait_timeout" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
+	PackerBuildName         *string           `mapstructure:"packer_build_name" cty:"packer_build_name" hcl:"packer_build_name"`
+	PackerBuilderType       *string           `mapstructure:"packer_builder_type" cty:"packer_builder_type" hcl:"packer_builder_type"`
+	PackerCoreVersion       *string           `mapstructure:"packer_core_version" cty:"packer_core_version" hcl:"packer_core_version"`
+	PackerDebug             *bool             `mapstructure:"packer_debug" cty:"packer_debug" hcl:"packer_debug"`
+	PackerForce             *bool             `mapstructure:"packer_force" cty:"packer_force" hcl:"packer_force"`
+	PackerOnError           *string           `mapstructure:"packer_on_error" cty:"packer_on_error" hcl:"packer_on_error"`
+	PackerUserVars          map[string]string `mapstructure:"packer_user_variables" cty:"packer_user_variables" hcl:"packer_user_variables"`
+	PackerSensitiveVars     []string          `mapstructure:"packer_sensitive_variables" cty:"packer_sensitive_variables" hcl:"packer_sensitive_variables"`
+	KubeConfig              *string           `mapstructure:"kube_config" cty:"kube_config" hcl:"kube_config"`
+	Name                    *string           `mapstructure:"name" cty:"name" hcl:"name"`
+	Namespace               *string           `mapstructure:"namespace" cty:"namespace" hcl:"namespace"`
+	IsoVolumeName           *string           `mapstructure:"iso_volume_name" cty:"iso_volume_name" hcl:"iso_volume_name"`
+	DiskSize                *string           `mapstructure:"disk_size" cty:"disk_size" hcl:"disk_size"`
+	InstanceType            *string           `mapstructure:"instance_type" cty:"instance_type" hcl:"instance_type"`
+	Preference              *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
+	BootCommand             []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
+	BootWait                *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
+	InstallationWaitTimeout *string           `mapstructure:"installation_wait_timeout" cty:"installation_wait_timeout" hcl:"installation_wait_timeout"`
+	Communicator            *string           `mapstructure:"communicator" cty:"communicator" hcl:"communicator"`
+	SSHUsername             *string           `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
+	SSHPassword             *string           `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
+	SSHWaitTimeout          *string           `mapstructure:"ssh_wait_timeout" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -62,6 +63,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"preference":                 &hcldec.AttrSpec{Name: "preference", Type: cty.String, Required: false},
 		"boot_command":               &hcldec.AttrSpec{Name: "boot_command", Type: cty.List(cty.String), Required: false},
 		"boot_wait":                  &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},
+		"installation_wait_timeout":  &hcldec.AttrSpec{Name: "installation_wait_timeout", Type: cty.String, Required: false},
 		"communicator":               &hcldec.AttrSpec{Name: "communicator", Type: cty.String, Required: false},
 		"ssh_username":               &hcldec.AttrSpec{Name: "ssh_username", Type: cty.String, Required: false},
 		"ssh_password":               &hcldec.AttrSpec{Name: "ssh_password", Type: cty.String, Required: false},
