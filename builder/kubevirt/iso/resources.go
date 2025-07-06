@@ -4,6 +4,9 @@
 package iso
 
 import (
+	"os"
+	"path/filepath"
+
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -12,6 +15,27 @@ import (
 	v1 "kubevirt.io/api/core/v1"
 	cdiv1 "kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 )
+
+func configMap(name string, mediaFiles []string) (*corev1.ConfigMap, error) {
+	data := make(map[string]string)
+
+	for _, path := range mediaFiles {
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+
+		filename := filepath.Base(path)
+		data[filename] = string(content)
+	}
+
+	return &corev1.ConfigMap{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: name + "-cm",
+		},
+		Data: data,
+	}, nil
+}
 
 func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName string) *v1.VirtualMachine {
 	rootdisk := uint(1)
@@ -111,7 +135,7 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 							VolumeSource: v1.VolumeSource{
 								ConfigMap: &v1.ConfigMapVolumeSource{
 									LocalObjectReference: corev1.LocalObjectReference{
-										Name: "oemdrv-cm",
+										Name: name + "-cm",
 									},
 									VolumeLabel: "OEMDRV",
 								},

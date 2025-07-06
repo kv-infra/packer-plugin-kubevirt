@@ -39,6 +39,10 @@ variable "preference" {
   type = string
 }
 
+variable "media_files" {
+  type = list(string)
+}
+
 variable "boot_command" {
   type = list(string)
 }
@@ -75,6 +79,7 @@ source "kubevirt-iso" "example" {
   disk_size                    = var.disk_size
   instance_type                = var.instance_type
   preference                   = var.preference
+  media_files                  = var.media_files
   boot_command                 = var.boot_command
   boot_wait                    = var.boot_wait
   installation_wait_timeout    = var.installation_wait_timeout

@@ -25,6 +25,7 @@ type FlatConfig struct {
 	DiskSize                *string           `mapstructure:"disk_size" cty:"disk_size" hcl:"disk_size"`
 	InstanceType            *string           `mapstructure:"instance_type" cty:"instance_type" hcl:"instance_type"`
 	Preference              *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
+	MediaFiles              []string          `mapstructure:"media_files" cty:"media_files" hcl:"media_files"`
 	BootCommand             []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
 	BootWait                *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
 	InstallationWaitTimeout *string           `mapstructure:"installation_wait_timeout" cty:"installation_wait_timeout" hcl:"installation_wait_timeout"`
@@ -61,6 +62,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"disk_size":                  &hcldec.AttrSpec{Name: "disk_size", Type: cty.String, Required: false},
 		"instance_type":              &hcldec.AttrSpec{Name: "instance_type", Type: cty.String, Required: false},
 		"preference":                 &hcldec.AttrSpec{Name: "preference", Type: cty.String, Required: false},
+		"media_files":                &hcldec.AttrSpec{Name: "media_files", Type: cty.List(cty.String), Required: false},
 		"boot_command":               &hcldec.AttrSpec{Name: "boot_command", Type: cty.List(cty.String), Required: false},
 		"boot_wait":                  &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},
 		"installation_wait_timeout":  &hcldec.AttrSpec{Name: "installation_wait_timeout", Type: cty.String, Required: false},

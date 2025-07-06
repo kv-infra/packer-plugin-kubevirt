@@ -33,25 +33,19 @@ $ packer plugins install --path packer-plugin-kubevirt github.com/kv-infra/kubev
 
 > 💡 Ensure you are logged in to the Kubernetes cluster and that KubeVirt is installed.
 
-Export variable below that is used by the Packer builder:
+1. Export variable below that is used by the Packer builder:
 
 ```shell
 $ export KUBECONFIG=~/.kube/config
 ```
 
-Deploy a DataVolume to import the Fedora 42 ISO:
+2. Deploy a DataVolume to import the Fedora 42 ISO:
 
 ```shell
-$ kubectl apply -f ./example/fedora42-x86-64-iso.yaml
+$ kubectl apply -f ./example/iso/fedora42-x86-64-iso.yaml
 ```
 
-Create a ConfigMap containing the kickstart file for automated installation:
-
-```shell
-$ kubectl create configmap oemdrv-cm --from-file=./example/ks.cfg
-```
-
-Run the Packer build with custom variables:
+3. Run the Packer build with custom variables:
 
 ```shell
 $ packer build -var-file=./example/variables.pkrvars.hcl ./example/build.pkr.hcl

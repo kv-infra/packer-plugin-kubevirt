@@ -23,6 +23,7 @@ type Config struct {
 	DiskSize                string        `mapstructure:"disk_size"`
 	InstanceType            string        `mapstructure:"instance_type"`
 	Preference              string        `mapstructure:"preference"`
+	MediaFiles              []string      `mapstructure:"media_files"`
 	BootCommand             []string      `mapstructure:"boot_command"`
 	BootWait                time.Duration `mapstructure:"boot_wait"`
 	InstallationWaitTimeout time.Duration `mapstructure:"installation_wait_timeout"`

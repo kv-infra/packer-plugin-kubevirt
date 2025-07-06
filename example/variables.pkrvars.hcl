@@ -7,6 +7,9 @@ iso_volume_name           = "fedora42-x86-64-iso"
 disk_size                 = "10Gi"
 instance_type             = "o1.medium"
 preference                = "linux"
+media_files               = [
+    "./example/kickstarts/ks.cfg"
+]
 boot_command              = [
     "<up>e",
     "<down><down><end>",

@@ -17,13 +17,17 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 	"github.com/kv-infra/packer-plugin-kubevirt/builder/kubevirt/common"
 
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
+
 	"kubevirt.io/client-go/kubecli"
 )
 
 type Builder struct {
-	config Config
-	runner multistep.Runner
-	client kubecli.KubevirtClient
+	config    Config
+	runner    multistep.Runner
+	client    kubecli.KubevirtClient
+	clientset *kubernetes.Clientset
 }
 
 func (b *Builder) ConfigSpec() hcldec.ObjectSpec {
@@ -37,11 +41,23 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
 	}
 
 	kubeConfig := b.config.KubeConfig
+
 	client, err := kubecli.GetKubevirtClientFromFlags("", kubeConfig)
 	if err != nil {
 		log.Panicln(err)
 	}
 	b.client = client
+
+	config, err := clientcmd.BuildConfigFromFlags("", kubeConfig)
+	if err != nil {
+		log.Panicln(err)
+	}
+
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		log.Panicln(err)
+	}
+	b.clientset = clientset
 	return nil, warnings, nil
 }
 
@@ -51,6 +67,10 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 		&StepCreateIsoVolume{
 			config: b.config,
 			client: b.client,
+		},
+		&StepCreateConfigMap{
+			config: b.config,
+			client: b.clientset,
 		},
 		&StepCreateVirtualMachine{
 			config: b.config,
