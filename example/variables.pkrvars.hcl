@@ -14,8 +14,8 @@ boot_command              = [
     "<leftCtrlOn>x<leftCtrlOff>",
 ]
 boot_wait                 = "60s"
-installation_wait_timeout = "15m"
+installation_wait_timeout = "10m"
 communicator              = "ssh"
 ssh_username              = "user"
 ssh_password              = "root"
-ssh_wait_timeout          = "20m"
+ssh_wait_timeout          = "15m"

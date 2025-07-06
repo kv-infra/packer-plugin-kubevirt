@@ -75,6 +75,10 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 	}
 
 	steps = append(steps,
+		&StepStopVirtualMachine{
+			config: b.config,
+			client: b.client,
+		},
 		&StepCreateBootableVolume{
 			config: b.config,
 			client: b.client,
