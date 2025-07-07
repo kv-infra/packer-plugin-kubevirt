@@ -21,7 +21,7 @@ type StepStartPortForward struct {
 
 func (s *StepStartPortForward) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	name := s.config.Name + "-vm"
+	name := s.config.Name
 	namespace := s.config.Namespace
 	address, _ := net.ResolveIPAddr("", common.DefaultIPAddress)
 	vm := s.client.VirtualMachine(namespace)

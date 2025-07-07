@@ -24,7 +24,7 @@ type StepBootCommand struct {
 
 func (s *StepBootCommand) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	name := s.config.Name + "-vm"
+	name := s.config.Name
 	namespace := s.config.Namespace
 	bootCommand := strings.Join(s.config.BootCommand, "")
 	bootWait := s.config.BootWait
@@ -52,7 +52,7 @@ func (s *StepBootCommand) Run(ctx context.Context, state multistep.StateBag) mul
 		return multistep.ActionHalt
 	}
 
-	ui.Say("Typing the boot command over VNC... Keep only single VNC connection here!")
+	ui.Say("Typing the boot command... Keep only single VNC connection here!")
 
 	command, err := interpolate.Render(bootCommand, &interpolate.Context{})
 	if err != nil {

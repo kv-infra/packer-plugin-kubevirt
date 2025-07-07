@@ -21,17 +21,17 @@ type StepCreateVirtualMachine struct {
 
 func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	ui.Say("Creating a new temporary VirutalMachine...")
-
 	name := s.config.Name
 	namespace := s.config.Namespace
 	isoVolumeName := s.config.IsoVolumeName
 	diskSize := s.config.DiskSize
 	instanceTypeName := s.config.InstanceType
 	preferenceName := s.config.Preference
-	v1VirtualMachine := virtualMachine(name, isoVolumeName, diskSize, instanceTypeName, preferenceName)
+	virtualMachine := virtualMachine(name, isoVolumeName, diskSize, instanceTypeName, preferenceName)
 
-	_, err := s.client.VirtualMachine(namespace).Create(ctx, v1VirtualMachine, metav1.CreateOptions{})
+	ui.Sayf("Creating a new temporary VirutalMachine (%s/%s)...", namespace, name)
+
+	_, err := s.client.VirtualMachine(namespace).Create(ctx, virtualMachine, metav1.CreateOptions{})
 	if err != nil {
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -41,10 +41,10 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 
 func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
-	ui.Say("Deleting VirutalMachine...")
-
-	name := s.config.Name + "-vm"
+	name := s.config.Name
 	namespace := s.config.Namespace
+
+	ui.Sayf("Deleting VirutalMachine (%s/%s)...", namespace, name)
 
 	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
 }

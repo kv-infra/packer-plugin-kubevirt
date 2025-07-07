@@ -24,7 +24,7 @@ func (s *StepCreateConfigMap) Run(ctx context.Context, state multistep.StateBag)
 	namespace := s.config.Namespace
 	mediaFiles := s.config.MediaFiles
 
-	ui.Say("Creating a new ConfigMap that is used by the VirtualMachine...")
+	ui.Sayf("Creating a new ConfigMap to store media files (%s/%s)...", namespace, name)
 
 	configMap, err := configMap(name, mediaFiles)
 	if err != nil {
@@ -42,10 +42,10 @@ func (s *StepCreateConfigMap) Run(ctx context.Context, state multistep.StateBag)
 
 func (s *StepCreateConfigMap) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
-	ui.Say("Deleting ConfigMap...")
-
-	name := s.config.Name + "-cm"
+	name := s.config.Name
 	namespace := s.config.Namespace
+
+	ui.Sayf("Deleting ConfigMap (%s/%s)...", namespace, name)
 
 	s.client.CoreV1().ConfigMaps(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
 }

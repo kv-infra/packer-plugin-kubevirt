@@ -1,9 +1,9 @@
 # Copyright (c) Red Hat, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-name                      = "fedora42"
+name                      = "fedora-42-rand-85"
 namespace                 = "ben-dev"
-iso_volume_name           = "fedora42-x86-64-iso"
+iso_volume_name           = "fedora-42-x86-64-iso"
 disk_size                 = "10Gi"
 instance_type             = "o1.medium"
 preference                = "linux"

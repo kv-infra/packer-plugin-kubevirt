@@ -1,7 +1,7 @@
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume
 metadata:
-  name: fedora42-x86-64-iso
+  name: fedora-42-x86-64-iso
   annotations:
     cdi.kubevirt.io/storage.bind.immediate.requested: "true"
 spec:

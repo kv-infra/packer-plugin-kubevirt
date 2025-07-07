@@ -21,8 +21,6 @@ type StepCreateBootableVolume struct {
 
 func (s *StepCreateBootableVolume) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	ui.Say("Creating a new bootable volume from VirutalMachine...")
-
 	name := s.config.Name
 	namespace := s.config.Namespace
 	diskSize := s.config.DiskSize
@@ -30,6 +28,8 @@ func (s *StepCreateBootableVolume) Run(ctx context.Context, state multistep.Stat
 	preferenceName := s.config.Preference
 	cloneVolume := cloneVolume(name, namespace, diskSize)
 	sourceVolume := sourceVolume(name, namespace, instanceType, preferenceName)
+
+	ui.Sayf("Creating a new bootable volume (%s/%s)...", namespace, name)
 
 	dv, err := s.client.CdiClient().CdiV1beta1().DataVolumes(namespace).Create(ctx, cloneVolume, metav1.CreateOptions{})
 	if err != nil {

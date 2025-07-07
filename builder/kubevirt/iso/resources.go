@@ -31,7 +31,7 @@ func configMap(name string, mediaFiles []string) (*corev1.ConfigMap, error) {
 
 	return &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: name + "-cm",
+			Name: name,
 		},
 		Data: data,
 	}, nil
@@ -48,7 +48,7 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 			Kind:       "VirtualMachine",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name: name + "-vm",
+			Name: name,
 		},
 		Spec: v1.VirtualMachineSpec{
 			RunStrategy: ptr.To(v1.RunStrategyAlways),
@@ -135,7 +135,7 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 							VolumeSource: v1.VolumeSource{
 								ConfigMap: &v1.ConfigMapVolumeSource{
 									LocalObjectReference: corev1.LocalObjectReference{
-										Name: name + "-cm",
+										Name: name,
 									},
 									VolumeLabel: "OEMDRV",
 								},
