@@ -64,11 +64,11 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
 func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (packer.Artifact, error) {
 	steps := []multistep.Step{}
 	steps = append(steps,
-		&StepValidateIsoVolume{
+		&StepValidateIsoDataVolume{
 			config: b.config,
 			client: b.client,
 		},
-		&StepCreateConfigMap{
+		&StepCopyMediaFiles{
 			config: b.config,
 			client: b.clientset,
 		},
@@ -80,7 +80,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			config: b.config,
 			client: b.client,
 		},
-		&StepWaitInstallation{
+		&StepWaitForInstallation{
 			config: b.config,
 		},
 	)

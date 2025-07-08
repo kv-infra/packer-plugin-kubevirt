@@ -13,12 +13,12 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-type StepCreateConfigMap struct {
+type StepCopyMediaFiles struct {
 	config Config
 	client *kubernetes.Clientset
 }
 
-func (s *StepCreateConfigMap) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepCopyMediaFiles) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	name := s.config.Name
 	namespace := s.config.Namespace
@@ -40,7 +40,7 @@ func (s *StepCreateConfigMap) Run(ctx context.Context, state multistep.StateBag)
 	return multistep.ActionContinue
 }
 
-func (s *StepCreateConfigMap) Cleanup(state multistep.StateBag) {
+func (s *StepCopyMediaFiles) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
 	name := s.config.Name
 	namespace := s.config.Namespace

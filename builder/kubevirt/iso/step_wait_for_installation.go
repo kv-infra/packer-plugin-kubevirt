@@ -11,11 +11,11 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 )
 
-type StepWaitInstallation struct {
+type StepWaitForInstallation struct {
 	config Config
 }
 
-func (s *StepWaitInstallation) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepWaitForInstallation) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	installationWaitTimeout := s.config.InstallationWaitTimeout
 
@@ -32,6 +32,6 @@ func (s *StepWaitInstallation) Run(ctx context.Context, state multistep.StateBag
 	return multistep.ActionContinue
 }
 
-func (s *StepWaitInstallation) Cleanup(multistep.StateBag) {
+func (s *StepWaitForInstallation) Cleanup(multistep.StateBag) {
 	// Left blank intentionally
 }

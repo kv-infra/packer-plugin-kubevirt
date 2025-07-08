@@ -13,12 +13,12 @@ import (
 	"kubevirt.io/client-go/kubecli"
 )
 
-type StepValidateIsoVolume struct {
+type StepValidateIsoDataVolume struct {
 	config Config
 	client kubecli.KubevirtClient
 }
 
-func (s *StepValidateIsoVolume) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepValidateIsoDataVolume) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	isoVolumeNamespace := s.config.Namespace
 	isoVolumeName := s.config.IsoVolumeName
@@ -38,6 +38,6 @@ func (s *StepValidateIsoVolume) Run(ctx context.Context, state multistep.StateBa
 	return multistep.ActionContinue
 }
 
-func (s *StepValidateIsoVolume) Cleanup(state multistep.StateBag) {
+func (s *StepValidateIsoDataVolume) Cleanup(state multistep.StateBag) {
 	// Left blank intentionally
 }
