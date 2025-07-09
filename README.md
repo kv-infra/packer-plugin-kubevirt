@@ -54,4 +54,4 @@ $ packer plugins install --path packer-plugin-kubevirt github.com/kv-infra/kubev
 
 ## Usage
 
-Refer to the usage guidance in the [examples](./examples/builder/kubevirt-iso/README.md) of this plugin.
+Refer to the usage guidance in the [examples](./examples/builder/kubevirt-iso) of this plugin.
