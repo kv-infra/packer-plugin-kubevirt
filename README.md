@@ -2,16 +2,31 @@
 
 The `KubeVirt` plugin can be used with [HashiCorp Packer](https://www.packer.io) to create KubeVirt images.
 
+## Packer
+
+[Packer](https://developer.hashicorp.com/packer) is a tool for creating identical machine images from a single source template.
+
+To get started, see the [Packer installation guide](https://developer.hashicorp.com/packer/install).
+
+## Plugin Features
+
+- **HCL Templating** – Use HashiCorp Configuration Language (HCL2) for defining infrastructure as code.
+- **ISO-based VM Creation** – Build VM images from ISO using the `kubevirt-iso` builder.
+- **Custom Media Injection** – Embed additional files into ISO-based installation (e.g., `kickstart.cfg` or `autounattend.xml`).
+- **Automated Boot Configuration** – Automate the VM boot process using a set of commands over VNC.
+- **Integrated SSH Access** – Enable VM provisioning and customization over SSH.
+- **Cloud-Agnostic Kubernetes** – Deployable across any Kubernetes with KubeVirt installed (EKS, GKE, AKS, etc.).
+
 ## Components
 
 ### Builders
 
 - `kubevirt-iso` - This builder starts from a ISO file and builds virtual machine image on a KubeVirt cluster.
 
-## Requirements
+## Prerequisites
 
-- [KubeVirt](https://kubevirt.io)
-- [Kubernetes](https://kubernetes.io)
+- [Packer](https://packer.io)
+- [Kubernetes](https://kubernetes.io) with [KubeVirt](https://kubevirt.io) installed
 
 ## Installation
 
@@ -39,22 +54,4 @@ $ packer plugins install --path packer-plugin-kubevirt github.com/kv-infra/kubev
 
 ## Usage
 
-> 💡 Ensure you are logged in to the Kubernetes cluster and that KubeVirt is installed.
-
-1. Export variable below that is used by the Packer builder:
-
-```shell
-$ export KUBECONFIG=~/.kube/config
-```
-
-2. Deploy a DataVolume to import the Fedora 42 ISO:
-
-```shell
-$ kubectl apply -f ./example/iso/fedora42-x86-64-iso.yaml
-```
-
-3. Run the Packer build with custom variables:
-
-```shell
-$ packer build -var-file=./example/variables.pkrvars.hcl ./example/build.pkr.hcl
-```
+Refer to the usage guidance in the [examples](./examples/builder/kubevirt-iso/README.md) of this plugin.
