@@ -12,10 +12,9 @@ To get started, see the [Packer installation guide](https://developer.hashicorp.
 
 - **HCL Templating** – Use HashiCorp Configuration Language (HCL2) for defining infrastructure as code.
 - **ISO-based VM Creation** – Build VM images from ISO using the `kubevirt-iso` builder.
-- **Custom Media Injection** – Embed additional files into ISO-based installation (e.g., `kickstart.cfg` or `autounattend.xml`).
+- **ISO Media Files** – Embed additional files into installation (e.g., `kickstart.cfg`).
 - **Automated Boot Configuration** – Automate the VM boot process using a set of commands over VNC.
 - **Integrated SSH Access** – Enable VM provisioning and customization over SSH.
-- **Cloud-Agnostic Kubernetes** – Deployable across any Kubernetes with KubeVirt installed (EKS, GKE, AKS, etc.).
 
 ## Components
 
