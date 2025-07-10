@@ -10,6 +10,11 @@ The `KubeVirt` plugin can be used with [HashiCorp Packer](https://www.packer.io)
 
 To get started, see the [Packer installation guide](https://developer.hashicorp.com/packer/install).
 
+## Prerequisites
+
+- [Packer](https://packer.io)
+- [Kubernetes](https://kubernetes.io) with [KubeVirt](https://kubevirt.io) installed
+
 ## Plugin Features
 
 - **HCL Templating** – Use HashiCorp Configuration Language (HCL2) for defining infrastructure as code.
@@ -20,14 +25,11 @@ To get started, see the [Packer installation guide](https://developer.hashicorp.
 
 ## Components
 
-### Builders
-
 - `kubevirt-iso` - This builder starts from a ISO file and builds virtual machine image on a KubeVirt cluster.
 
-## Prerequisites
+### Design
 
-- [Packer](https://packer.io)
-- [Kubernetes](https://kubernetes.io) with [KubeVirt](https://kubevirt.io) installed
+<img src="docs/kubevirt-iso-builder-design.jpg" alt="Design" width="400"/>
 
 ## Installation
 
