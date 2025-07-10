@@ -15,7 +15,7 @@ variable "kube_config" {
   default = "${env("KUBECONFIG")}"
 }
 
-source "kubevirt-iso" "fedora" {
+source "kubevirt-iso" "rhel" {
   # Kubernetes configuration
   kube_config   = var.kube_config
   name          = "rhel-10-rand-95"
@@ -53,7 +53,7 @@ source "kubevirt-iso" "fedora" {
 }
 
 build {
-  sources = ["source.kubevirt-iso.fedora"]
+  sources = ["source.kubevirt-iso.rhel"]
 
   provisioner "shell" {
     inline = [
