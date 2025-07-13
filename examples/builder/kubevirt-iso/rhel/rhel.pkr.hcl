@@ -43,13 +43,13 @@ source "kubevirt-iso" "rhel" {
     "<leftCtrlOn>x<leftCtrlOff>"        # Boot with modified command line
   ]
   boot_wait                 = "60s"     # Time to wait after boot starts
-  installation_wait_timeout = "10m"     # Timeout for installation to complete
+  installation_wait_timeout = "15m"     # Timeout for installation to complete
 
   # SSH configuration
   communicator      = "ssh"
-  ssh_username      = "admin"
+  ssh_username      = "user"
   ssh_password      = "root"
-  ssh_wait_timeout  = "15m"
+  ssh_wait_timeout  = "20m"
 }
 
 build {
