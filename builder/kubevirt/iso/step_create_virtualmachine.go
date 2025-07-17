@@ -39,10 +39,9 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 		return multistep.ActionHalt
 	}
 
-	if s.waitUntilVirtualMachineReady() != nil {
+	if err := s.waitUntilVirtualMachineReady(ctx); err != nil {
 		return multistep.ActionHalt
 	}
-
 	return multistep.ActionContinue
 }
 
@@ -56,7 +55,7 @@ func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
 }
 
-func (s *StepCreateVirtualMachine) waitUntilVirtualMachineReady() error {
+func (s *StepCreateVirtualMachine) waitUntilVirtualMachineReady(ctx context.Context) error {
 	name := s.config.Name
 	namespace := s.config.Namespace
 	pollInterval := 5 * time.Second
@@ -73,5 +72,5 @@ func (s *StepCreateVirtualMachine) waitUntilVirtualMachineReady() error {
 		return false, nil
 	}
 
-	return wait.PollUntilContextTimeout(context.Background(), pollInterval, pollTimeout, true, poller)
+	return wait.PollUntilContextTimeout(ctx, pollInterval, pollTimeout, true, poller)
 }
