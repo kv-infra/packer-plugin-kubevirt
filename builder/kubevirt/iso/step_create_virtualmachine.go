@@ -5,11 +5,13 @@ package iso
 
 import (
 	"context"
+	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
 
 	"kubevirt.io/client-go/kubecli"
 )
@@ -36,6 +38,11 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
+
+	if s.waitUntilVirtualMachineReady() != nil {
+		return multistep.ActionHalt
+	}
+
 	return multistep.ActionContinue
 }
 
@@ -47,4 +54,24 @@ func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 	ui.Sayf("Deleting VirutalMachine (%s/%s)...", namespace, name)
 
 	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
+}
+
+func (s *StepCreateVirtualMachine) waitUntilVirtualMachineReady() error {
+	name := s.config.Name
+	namespace := s.config.Namespace
+	pollInterval := 5 * time.Second
+	pollTimeout := 3600 * time.Second
+	poller := func(ctx context.Context) (bool, error) {
+		vm, err := s.client.VirtualMachine(namespace).Get(ctx, name, metav1.GetOptions{})
+		if err != nil {
+			return false, err
+		}
+
+		if vm.Status.Ready {
+			return true, nil
+		}
+		return false, nil
+	}
+
+	return wait.PollUntilContextTimeout(context.Background(), pollInterval, pollTimeout, true, poller)
 }
