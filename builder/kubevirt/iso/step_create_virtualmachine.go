@@ -12,6 +12,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
+	ptr "k8s.io/utils/ptr"
 
 	"kubevirt.io/client-go/kubecli"
 )
@@ -52,7 +53,9 @@ func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 
 	ui.Sayf("Deleting VirutalMachine (%s/%s)...", namespace, name)
 
-	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
+	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{
+		GracePeriodSeconds: ptr.To(int64(0)),
+	})
 }
 
 func (s *StepCreateVirtualMachine) waitUntilVirtualMachineReady(ctx context.Context) error {
