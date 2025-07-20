@@ -5,7 +5,7 @@ packer {
   required_plugins {
     kubevirt = {
       source  = "github.com/kv-infra/kubevirt"
-      version = ">= 0.1.0"
+      version = ">= 0.2.0"
     }
   }
 }
@@ -42,7 +42,7 @@ source "kubevirt-iso" "fedora" {
     " inst.ks=hd:LABEL=OEMDRV:/ks.cfg", # Set kickstart file location
     "<leftCtrlOn>x<leftCtrlOff>"        # Boot with modified command line
   ]
-  boot_wait                 = "60s"     # Time to wait after boot starts
+  boot_wait                 = "10s"     # Time to wait after boot starts
   installation_wait_timeout = "15m"     # Timeout for installation to complete
 
   # SSH configuration
