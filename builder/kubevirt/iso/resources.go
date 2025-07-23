@@ -13,6 +13,7 @@ import (
 	ptr "k8s.io/utils/ptr"
 
 	v1 "kubevirt.io/api/core/v1"
+	instancetypeapi "kubevirt.io/api/instancetype"
 	cdiv1 "kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 )
 
@@ -37,10 +38,25 @@ func configMap(name string, mediaFiles []string) (*corev1.ConfigMap, error) {
 	}, nil
 }
 
-func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName string) *v1.VirtualMachine {
+func virtualMachine(
+	name,
+	isoVolumeName,
+	diskSize,
+	instanceType,
+	preferenceName,
+	instanceTypeKind,
+	preferenceKind string) *v1.VirtualMachine {
 	rootdisk := uint(1)
 	cdrom := uint(2)
 	oemdrv := uint(3)
+
+	if instanceTypeKind == "" {
+		instanceTypeKind = instancetypeapi.ClusterSingularResourceName
+	}
+
+	if preferenceKind == "" {
+		preferenceKind = instancetypeapi.ClusterSingularPreferenceResourceName
+	}
 
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
@@ -53,9 +69,11 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 		Spec: v1.VirtualMachineSpec{
 			RunStrategy: ptr.To(v1.RunStrategyAlways),
 			Instancetype: &v1.InstancetypeMatcher{
+				Kind: instanceTypeKind,
 				Name: instanceType,
 			},
 			Preference: &v1.PreferenceMatcher{
+				Kind: preferenceKind,
 				Name: preferenceName,
 			},
 			DataVolumeTemplates: []v1.DataVolumeTemplateSpec{
@@ -120,9 +138,7 @@ func virtualMachine(name, isoVolumeName, diskSize, instanceType, preferenceName 
 								{
 									Name: "rootdisk",
 									DiskDevice: v1.DiskDevice{
-										Disk: &v1.DiskTarget{
-											Bus: "virtio",
-										},
+										Disk: &v1.DiskTarget{},
 									},
 									BootOrder: &rootdisk,
 								},

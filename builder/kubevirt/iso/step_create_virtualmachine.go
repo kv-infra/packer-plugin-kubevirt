@@ -29,8 +29,17 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 	isoVolumeName := s.config.IsoVolumeName
 	diskSize := s.config.DiskSize
 	instanceTypeName := s.config.InstanceType
+	instanceTypeKind := s.config.InstanceTypeKind
 	preferenceName := s.config.Preference
-	virtualMachine := virtualMachine(name, isoVolumeName, diskSize, instanceTypeName, preferenceName)
+	preferenceKind := s.config.PreferenceKind
+	virtualMachine := virtualMachine(
+		name,
+		isoVolumeName,
+		diskSize,
+		instanceTypeName,
+		preferenceName,
+		instanceTypeKind,
+		preferenceKind)
 
 	ui.Sayf("Creating a new temporary VirutalMachine (%s/%s)...", namespace, name)
 

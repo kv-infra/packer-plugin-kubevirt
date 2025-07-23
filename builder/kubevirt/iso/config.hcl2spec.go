@@ -24,7 +24,9 @@ type FlatConfig struct {
 	IsoVolumeName           *string           `mapstructure:"iso_volume_name" cty:"iso_volume_name" hcl:"iso_volume_name"`
 	DiskSize                *string           `mapstructure:"disk_size" cty:"disk_size" hcl:"disk_size"`
 	InstanceType            *string           `mapstructure:"instance_type" cty:"instance_type" hcl:"instance_type"`
+	InstanceTypeKind        *string           `mapstructure:"instance_type_kind" cty:"instance_type_kind" hcl:"instance_type_kind"`
 	Preference              *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
+	PreferenceKind          *string           `mapstructure:"preference_kind" cty:"preference_kind" hcl:"preference_kind"`
 	MediaFiles              []string          `mapstructure:"media_files" cty:"media_files" hcl:"media_files"`
 	BootCommand             []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
 	BootWait                *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
@@ -61,7 +63,9 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"iso_volume_name":            &hcldec.AttrSpec{Name: "iso_volume_name", Type: cty.String, Required: false},
 		"disk_size":                  &hcldec.AttrSpec{Name: "disk_size", Type: cty.String, Required: false},
 		"instance_type":              &hcldec.AttrSpec{Name: "instance_type", Type: cty.String, Required: false},
+		"instance_type_kind":         &hcldec.AttrSpec{Name: "instance_type_kind", Type: cty.String, Required: false},
 		"preference":                 &hcldec.AttrSpec{Name: "preference", Type: cty.String, Required: false},
+		"preference_kind":            &hcldec.AttrSpec{Name: "preference_kind", Type: cty.String, Required: false},
 		"media_files":                &hcldec.AttrSpec{Name: "media_files", Type: cty.List(cty.String), Required: false},
 		"boot_command":               &hcldec.AttrSpec{Name: "boot_command", Type: cty.List(cty.String), Required: false},
 		"boot_wait":                  &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},

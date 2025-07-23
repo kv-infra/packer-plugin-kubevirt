@@ -25,9 +25,11 @@ source "kubevirt-iso" "rhel" {
   iso_volume_name = "rhel-10-x86-64-iso"
 
   # VM type and preferences
-  disk_size     = "10Gi"
-  instance_type = "o1.medium"
-  preference    = "rhel.10"
+  disk_size          = "10Gi"
+  instance_type      = "o1.medium"
+  instance_type_kind = "virtualmachineclusterinstancetype" # or "virtualmachineinstancetype"
+  preference         = "rhel.10"
+  preference_kind    = "virtualmachineclusterpreference" # or "virtualmachinepreference"
 
   # Files to include in the ISO installation
   media_files = [

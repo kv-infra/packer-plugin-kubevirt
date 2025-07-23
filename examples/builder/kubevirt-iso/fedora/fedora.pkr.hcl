@@ -25,9 +25,11 @@ source "kubevirt-iso" "fedora" {
   iso_volume_name = "fedora-42-x86-64-iso"
 
   # VM type and preferences
-  disk_size     = "10Gi"
-  instance_type = "o1.medium"
-  preference    = "linux"
+  disk_size          = "10Gi"
+  instance_type      = "o1.medium"
+  instance_type_kind = "virtualmachineclusterinstancetype" # or "virtualmachineinstancetype"
+  preference         = "linux"
+  preference_kind    = "virtualmachineclusterpreference" # or "virtualmachinepreference"
 
   # Files to include in the ISO installation
   media_files = [

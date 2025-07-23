@@ -22,7 +22,9 @@ type Config struct {
 	IsoVolumeName           string        `mapstructure:"iso_volume_name"`
 	DiskSize                string        `mapstructure:"disk_size"`
 	InstanceType            string        `mapstructure:"instance_type"`
+	InstanceTypeKind        string        `mapstructure:"instance_type_kind"`
 	Preference              string        `mapstructure:"preference"`
+	PreferenceKind          string        `mapstructure:"preference_kind"`
 	MediaFiles              []string      `mapstructure:"media_files"`
 	BootCommand             []string      `mapstructure:"boot_command"`
 	BootWait                time.Duration `mapstructure:"boot_wait"`
