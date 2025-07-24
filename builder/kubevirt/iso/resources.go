@@ -98,24 +98,8 @@ func virtualMachine(
 			},
 			Template: &v1.VirtualMachineInstanceTemplateSpec{
 				Spec: v1.VirtualMachineInstanceSpec{
-					Networks: []v1.Network{
-						{
-							Name: "default",
-							NetworkSource: v1.NetworkSource{
-								Pod: &v1.PodNetwork{},
-							},
-						},
-					},
 					Domain: v1.DomainSpec{
 						Devices: v1.Devices{
-							Interfaces: []v1.Interface{
-								{
-									Name: "default",
-									InterfaceBindingMethod: v1.InterfaceBindingMethod{
-										Masquerade: &v1.InterfaceMasquerade{},
-									},
-								},
-							},
 							Disks: []v1.Disk{
 								{
 									Name: "cdrom",
