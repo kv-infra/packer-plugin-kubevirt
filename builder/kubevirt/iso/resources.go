@@ -46,9 +46,8 @@ func virtualMachine(
 	preferenceName,
 	instanceTypeKind,
 	preferenceKind string) *v1.VirtualMachine {
-	rootdisk := uint(1)
-	cdrom := uint(2)
-	oemdrv := uint(3)
+	cdrom := uint(1)
+	rootdisk := uint(2)
 
 	if instanceTypeKind == "" {
 		instanceTypeKind = instancetypeapi.ClusterSingularResourceName
@@ -111,20 +110,27 @@ func virtualMachine(
 									BootOrder: &cdrom,
 								},
 								{
-									Name: "oemdrv",
-									DiskDevice: v1.DiskDevice{
-										CDRom: &v1.CDRomTarget{
-											Tray: "closed",
-										},
-									},
-									BootOrder: &oemdrv,
-								},
-								{
 									Name: "rootdisk",
 									DiskDevice: v1.DiskDevice{
 										Disk: &v1.DiskTarget{},
 									},
 									BootOrder: &rootdisk,
+								},
+								{
+									Name: "sysprep",
+									DiskDevice: v1.DiskDevice{
+										CDRom: &v1.CDRomTarget{
+											Bus: "sata",
+										},
+									},
+								},
+								{
+									Name: "virtiocontainerdisk",
+									DiskDevice: v1.DiskDevice{
+										CDRom: &v1.CDRomTarget{
+											Bus: "sata",
+										},
+									},
 								},
 							},
 						},
@@ -147,13 +153,20 @@ func virtualMachine(
 							},
 						},
 						{
-							Name: "oemdrv",
+							Name: "sysprep",
 							VolumeSource: v1.VolumeSource{
-								ConfigMap: &v1.ConfigMapVolumeSource{
-									LocalObjectReference: corev1.LocalObjectReference{
+								Sysprep: &v1.SysprepSource{
+									ConfigMap: &corev1.LocalObjectReference{
 										Name: name,
 									},
-									VolumeLabel: "OEMDRV",
+								},
+							},
+						},
+						{
+							Name: "virtiocontainerdisk",
+							VolumeSource: v1.VolumeSource{
+								ContainerDisk: &v1.ContainerDiskSource{
+									Image: "quay.io/kubevirt/virtio-container-disk:v1.5.2",
 								},
 							},
 						},
