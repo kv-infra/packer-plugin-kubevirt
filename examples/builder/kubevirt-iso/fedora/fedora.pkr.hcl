@@ -50,6 +50,9 @@ source "kubevirt-iso" "fedora" {
 
   # SSH configuration
   communicator      = "ssh"
+  ssh_host          = "127.0.0.1"
+  ssh_local_port    = 2020
+  ssh_remote_port   = 22
   ssh_username      = "user"
   ssh_password      = "root"
   ssh_wait_timeout  = "20m"

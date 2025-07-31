@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
-	"github.com/kv-infra/packer-plugin-kubevirt/builder/kubevirt/common"
 
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -94,6 +93,15 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 		steps = append(steps, sshSteps...)
 	}
 
+	if b.config.Communicator == "winrm" {
+		winRMSteps, err := b.buildWinRMSteps()
+		if err != nil {
+			ui.Errorf("WinRM communicator config error: %v", err)
+			return nil, nil
+		}
+		steps = append(steps, winRMSteps...)
+	}
+
 	steps = append(steps,
 		&StepStopVirtualMachine{
 			config: b.config,
@@ -118,8 +126,8 @@ func (b *Builder) buildSSHSteps() ([]multistep.Step, []error) {
 	commConfig := &communicator.Config{
 		Type: b.config.Communicator,
 		SSH: communicator.SSH{
-			SSHHost:     common.DefaultIPAddress,
-			SSHPort:     common.DefaultLocalPort,
+			SSHHost:     b.config.SSHHost,
+			SSHPort:     b.config.SSHLocalPort,
 			SSHUsername: b.config.SSHUsername,
 			SSHPassword: b.config.SSHPassword,
 			SSHTimeout:  b.config.SSHWaitTimeout,
@@ -150,7 +158,48 @@ func (b *Builder) buildSSHSteps() ([]multistep.Step, []error) {
 				}, nil
 			},
 			SSHPort: func(state multistep.StateBag) (int, error) {
-				return common.DefaultLocalPort, nil
+				return b.config.SSHLocalPort, nil
+			},
+		},
+		&commonsteps.StepProvision{},
+	}
+	return steps, nil
+}
+
+func (b *Builder) buildWinRMSteps() ([]multistep.Step, []error) {
+	commConfig := &communicator.Config{
+		Type: b.config.Communicator,
+		WinRM: communicator.WinRM{
+			WinRMHost:     b.config.WinRMHost,
+			WinRMPort:     b.config.WinRMLocalPort,
+			WinRMUser:     b.config.WinRMUsername,
+			WinRMPassword: b.config.WinRMPassword,
+			WinRMTimeout:  b.config.WinRMWaitTimeout,
+		},
+	}
+
+	if err := commConfig.Prepare(&interpolate.Context{}); err != nil {
+		return nil, err
+	}
+
+	steps := []multistep.Step{
+		&StepStartPortForward{
+			config: b.config,
+			client: b.client,
+		},
+		&communicator.StepConnect{
+			Config: commConfig,
+			Host: func(state multistep.StateBag) (string, error) {
+				return commConfig.WinRMHost, nil
+			},
+			WinRMConfig: func(state multistep.StateBag) (*communicator.WinRMConfig, error) {
+				return &communicator.WinRMConfig{
+					Username: b.config.WinRMUsername,
+					Password: b.config.WinRMPassword,
+				}, nil
+			},
+			WinRMPort: func(state multistep.StateBag) (int, error) {
+				return b.config.WinRMLocalPort, nil
 			},
 		},
 		&commonsteps.StepProvision{},

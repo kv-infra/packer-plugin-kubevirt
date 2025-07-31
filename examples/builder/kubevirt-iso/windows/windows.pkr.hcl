@@ -18,7 +18,7 @@ variable "kube_config" {
 source "kubevirt-iso" "windows" {
   # Kubernetes configuration
   kube_config   = var.kube_config
-  name          = "windows-11-rand-415"
+  name          = "windows-11-rand-575"
   namespace     = "ben-dev"
 
   # ISO configuration
@@ -52,20 +52,30 @@ source "kubevirt-iso" "windows" {
   ]
   boot_wait                 = "5s"     # Time to wait after boot starts
   installation_wait_timeout = "20m"    # Timeout for installation to complete
+
+  # WinRM configuration
+  communicator       = "winrm"
+  winrm_host         = "127.0.0.1"
+  winrm_local_port   = 5000
+  winrm_remote_port  = 5985
+  winrm_username     = "Administrator"
+  winrm_password     = "shadowman"
+  winrm_wait_timeout = "25m"
 }
 
 build {
   sources = ["source.kubevirt-iso.windows"]
 
-  # provisioner "windows-shell" {
-  #   inline = [
-  #     "Write-Output 'Provisioning started...'",
-  #   ]
-  # }
+  provisioner "powershell" {
+    inline = [
+      "Write-Output 'Provisioning started...'",
+      "Get-Date",
+    ]
+  }
 
-  # provisioner "windows-shell" {
-  #   inline = [
-  #     "C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /mode:vm"
-  #   ]
-  # }
+  provisioner "windows-shell" {
+    inline = [
+      "C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /mode:vm"
+    ]
+  }
 }

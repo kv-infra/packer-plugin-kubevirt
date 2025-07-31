@@ -33,9 +33,18 @@ type FlatConfig struct {
 	BootWait                *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
 	InstallationWaitTimeout *string           `mapstructure:"installation_wait_timeout" cty:"installation_wait_timeout" hcl:"installation_wait_timeout"`
 	Communicator            *string           `mapstructure:"communicator" cty:"communicator" hcl:"communicator"`
+	SSHHost                 *string           `mapstructure:"ssh_host" cty:"ssh_host" hcl:"ssh_host"`
+	SSHLocalPort            *string           `mapstructure:"ssh_local_port" cty:"ssh_local_port" hcl:"ssh_local_port"`
+	SSHRemotePort           *string           `mapstructure:"ssh_remote_port" cty:"ssh_remote_port" hcl:"ssh_remote_port"`
 	SSHUsername             *string           `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
 	SSHPassword             *string           `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
 	SSHWaitTimeout          *string           `mapstructure:"ssh_wait_timeout" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
+	WinRMHost               *string           `mapstructure:"winrm_host" cty:"winrm_host" hcl:"winrm_host"`
+	WinRMLocalPort          *string           `mapstructure:"winrm_local_port" cty:"winrm_local_port" hcl:"winrm_local_port"`
+	WinRMRemotePort         *string           `mapstructure:"winrm_remote_port" cty:"winrm_remote_port" hcl:"winrm_remote_port"`
+	WinRMUsername           *string           `mapstructure:"winrm_username" cty:"winrm_username" hcl:"winrm_username"`
+	WinRMPassword           *string           `mapstructure:"winrm_password" cty:"winrm_password" hcl:"winrm_password"`
+	WinRMWaitTimeout        *string           `mapstructure:"winrm_wait_timeout" cty:"winrm_wait_timeout" hcl:"winrm_wait_timeout"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -73,9 +82,18 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"boot_wait":                  &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},
 		"installation_wait_timeout":  &hcldec.AttrSpec{Name: "installation_wait_timeout", Type: cty.String, Required: false},
 		"communicator":               &hcldec.AttrSpec{Name: "communicator", Type: cty.String, Required: false},
+		"ssh_host":                   &hcldec.AttrSpec{Name: "ssh_host", Type: cty.String, Required: false},
+		"ssh_local_port":             &hcldec.AttrSpec{Name: "ssh_local_port", Type: cty.String, Required: false},
+		"ssh_remote_port":            &hcldec.AttrSpec{Name: "ssh_remote_port", Type: cty.String, Required: false},
 		"ssh_username":               &hcldec.AttrSpec{Name: "ssh_username", Type: cty.String, Required: false},
 		"ssh_password":               &hcldec.AttrSpec{Name: "ssh_password", Type: cty.String, Required: false},
 		"ssh_wait_timeout":           &hcldec.AttrSpec{Name: "ssh_wait_timeout", Type: cty.String, Required: false},
+		"winrm_host":                 &hcldec.AttrSpec{Name: "winrm_host", Type: cty.String, Required: false},
+		"winrm_local_port":           &hcldec.AttrSpec{Name: "winrm_local_port", Type: cty.String, Required: false},
+		"winrm_remote_port":          &hcldec.AttrSpec{Name: "winrm_remote_port", Type: cty.String, Required: false},
+		"winrm_username":             &hcldec.AttrSpec{Name: "winrm_username", Type: cty.String, Required: false},
+		"winrm_password":             &hcldec.AttrSpec{Name: "winrm_password", Type: cty.String, Required: false},
+		"winrm_wait_timeout":         &hcldec.AttrSpec{Name: "winrm_wait_timeout", Type: cty.String, Required: false},
 	}
 	return s
 }

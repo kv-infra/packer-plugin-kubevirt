@@ -20,10 +20,27 @@ type StepStartPortForward struct {
 }
 
 func (s *StepStartPortForward) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+	var ipAddress string
+	var localPort int
+	var remotePort int
+
 	ui := state.Get("ui").(packer.Ui)
 	name := s.config.Name
 	namespace := s.config.Namespace
-	address, _ := net.ResolveIPAddr("", common.DefaultIPAddress)
+
+	if s.config.Communicator == "ssh" {
+		ipAddress = s.config.SSHHost
+		localPort = s.config.SSHLocalPort
+		remotePort = s.config.SSHRemotePort
+	}
+
+	if s.config.Communicator == "winrm" {
+		ipAddress = s.config.WinRMHost
+		localPort = s.config.WinRMLocalPort
+		remotePort = s.config.WinRMRemotePort
+	}
+
+	address, _ := net.ResolveIPAddr("", ipAddress)
 	vm := s.client.VirtualMachine(namespace)
 
 	errChan := make(chan error, 1)
@@ -40,8 +57,8 @@ func (s *StepStartPortForward) Run(ctx context.Context, state multistep.StateBag
 		}
 
 		err := forwarder.StartForwarding(forward.Address, common.ForwardedPort{
-			Local:    common.DefaultLocalPort,
-			Remote:   common.DefaultRemotePort,
+			Local:    localPort,
+			Remote:   remotePort,
 			Protocol: common.ProtocolTCP,
 		})
 		errChan <- err

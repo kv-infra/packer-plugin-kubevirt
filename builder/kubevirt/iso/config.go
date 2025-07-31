@@ -31,9 +31,18 @@ type Config struct {
 	BootWait                time.Duration `mapstructure:"boot_wait"`
 	InstallationWaitTimeout time.Duration `mapstructure:"installation_wait_timeout"`
 	Communicator            string        `mapstructure:"communicator"`
+	SSHHost                 string        `mapstructure:"ssh_host"`
+	SSHLocalPort            int           `mapstructure:"ssh_local_port"`
+	SSHRemotePort           int           `mapstructure:"ssh_remote_port"`
 	SSHUsername             string        `mapstructure:"ssh_username"`
 	SSHPassword             string        `mapstructure:"ssh_password"`
 	SSHWaitTimeout          time.Duration `mapstructure:"ssh_wait_timeout"`
+	WinRMHost               string        `mapstructure:"winrm_host"`
+	WinRMLocalPort          int           `mapstructure:"winrm_local_port"`
+	WinRMRemotePort         int           `mapstructure:"winrm_remote_port"`
+	WinRMUsername           string        `mapstructure:"winrm_username"`
+	WinRMPassword           string        `mapstructure:"winrm_password"`
+	WinRMWaitTimeout        time.Duration `mapstructure:"winrm_wait_timeout"`
 }
 
 func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
