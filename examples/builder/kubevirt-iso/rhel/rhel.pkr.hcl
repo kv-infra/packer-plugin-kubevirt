@@ -30,6 +30,7 @@ source "kubevirt-iso" "rhel" {
   instance_type_kind = "virtualmachineclusterinstancetype" # or "virtualmachineinstancetype"
   preference         = "rhel.10"
   preference_kind    = "virtualmachineclusterpreference" # or "virtualmachinepreference"
+  os_type            = "linux"
 
   # Files to include in the ISO installation
   media_files = [

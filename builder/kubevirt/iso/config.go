@@ -25,6 +25,7 @@ type Config struct {
 	InstanceTypeKind        string        `mapstructure:"instance_type_kind"`
 	Preference              string        `mapstructure:"preference"`
 	PreferenceKind          string        `mapstructure:"preference_kind"`
+	OperatingSystemType     string        `mapstructure:"os_type"`
 	MediaFiles              []string      `mapstructure:"media_files"`
 	BootCommand             []string      `mapstructure:"boot_command"`
 	BootWait                time.Duration `mapstructure:"boot_wait"`

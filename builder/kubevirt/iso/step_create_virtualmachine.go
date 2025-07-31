@@ -32,6 +32,13 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 	instanceTypeKind := s.config.InstanceTypeKind
 	preferenceName := s.config.Preference
 	preferenceKind := s.config.PreferenceKind
+	osType := s.config.OperatingSystemType
+
+	if osType == "" || (osType != "linux" && osType != "windows") {
+		ui.Errorf("OS type of '%s' is not supported, set 'linux' or 'windows'.", osType)
+		return multistep.ActionHalt
+	}
+
 	virtualMachine := virtualMachine(
 		name,
 		isoVolumeName,
@@ -39,7 +46,8 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 		instanceTypeName,
 		preferenceName,
 		instanceTypeKind,
-		preferenceKind)
+		preferenceKind,
+		osType)
 
 	ui.Sayf("Creating a new temporary VirutalMachine (%s/%s)...", namespace, name)
 

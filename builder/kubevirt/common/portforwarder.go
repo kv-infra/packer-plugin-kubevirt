@@ -33,8 +33,8 @@ const (
 	ProtocolTCP = "tcp"
 
 	DefaultIPAddress  = "127.0.0.1"
-	DefaultLocalPort  = 2020
-	DefaultRemotePort = 22
+	DefaultLocalPort  = 5000
+	DefaultRemotePort = 5985
 )
 
 type PortForward struct {

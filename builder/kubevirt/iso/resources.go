@@ -45,10 +45,10 @@ func virtualMachine(
 	instanceType,
 	preferenceName,
 	instanceTypeKind,
-	preferenceKind string) *v1.VirtualMachine {
-	rootdisk := uint(1)
-	cdrom := uint(2)
-	oemdrv := uint(3)
+	preferenceKind,
+	osType string) *v1.VirtualMachine {
+	var disks []v1.Disk
+	var volumes []v1.Volume
 
 	if instanceTypeKind == "" {
 		instanceTypeKind = instancetypeapi.ClusterSingularResourceName
@@ -56,6 +56,16 @@ func virtualMachine(
 
 	if preferenceKind == "" {
 		preferenceKind = instancetypeapi.ClusterSingularPreferenceResourceName
+	}
+
+	if osType == "linux" {
+		disks = getLinuxVirtualMachineDisks()
+		volumes = getLinuxVirtualMachineVolumes(name, isoVolumeName)
+	}
+
+	if osType == "windows" {
+		disks = getWindowsVirtualMachineDisks()
+		volumes = getWindowsVirtualMachineVolumes(name, isoVolumeName)
 	}
 
 	return &v1.VirtualMachine{
@@ -100,64 +110,10 @@ func virtualMachine(
 				Spec: v1.VirtualMachineInstanceSpec{
 					Domain: v1.DomainSpec{
 						Devices: v1.Devices{
-							Disks: []v1.Disk{
-								{
-									Name: "cdrom",
-									DiskDevice: v1.DiskDevice{
-										CDRom: &v1.CDRomTarget{
-											Tray: "closed",
-										},
-									},
-									BootOrder: &cdrom,
-								},
-								{
-									Name: "oemdrv",
-									DiskDevice: v1.DiskDevice{
-										CDRom: &v1.CDRomTarget{
-											Tray: "closed",
-										},
-									},
-									BootOrder: &oemdrv,
-								},
-								{
-									Name: "rootdisk",
-									DiskDevice: v1.DiskDevice{
-										Disk: &v1.DiskTarget{},
-									},
-									BootOrder: &rootdisk,
-								},
-							},
+							Disks: disks,
 						},
 					},
-					Volumes: []v1.Volume{
-						{
-							Name: "cdrom",
-							VolumeSource: v1.VolumeSource{
-								DataVolume: &v1.DataVolumeSource{
-									Name: isoVolumeName,
-								},
-							},
-						},
-						{
-							Name: "rootdisk",
-							VolumeSource: v1.VolumeSource{
-								DataVolume: &v1.DataVolumeSource{
-									Name: name + "-rootdisk",
-								},
-							},
-						},
-						{
-							Name: "oemdrv",
-							VolumeSource: v1.VolumeSource{
-								ConfigMap: &v1.ConfigMapVolumeSource{
-									LocalObjectReference: corev1.LocalObjectReference{
-										Name: name,
-									},
-									VolumeLabel: "OEMDRV",
-								},
-							},
-						},
-					},
+					Volumes: volumes,
 				},
 			},
 		},
@@ -210,6 +166,151 @@ func sourceVolume(name, namespace, instanceType, preferenceName string) *cdiv1.D
 				PVC: &cdiv1.DataVolumeSourcePVC{
 					Name:      name,
 					Namespace: namespace,
+				},
+			},
+		},
+	}
+}
+
+func getLinuxVirtualMachineDisks() []v1.Disk {
+	rootdisk := uint(1)
+	cdrom := uint(2)
+	oemdrv := uint(3)
+
+	return []v1.Disk{
+		{
+			Name: "cdrom",
+			DiskDevice: v1.DiskDevice{
+				CDRom: &v1.CDRomTarget{
+					Tray: "closed",
+				},
+			},
+			BootOrder: &cdrom,
+		},
+		{
+			Name: "oemdrv",
+			DiskDevice: v1.DiskDevice{
+				CDRom: &v1.CDRomTarget{
+					Tray: "closed",
+				},
+			},
+			BootOrder: &oemdrv,
+		},
+		{
+			Name: "rootdisk",
+			DiskDevice: v1.DiskDevice{
+				Disk: &v1.DiskTarget{},
+			},
+			BootOrder: &rootdisk,
+		},
+	}
+}
+
+func getLinuxVirtualMachineVolumes(name, isoVolumeName string) []v1.Volume {
+	return []v1.Volume{
+		{
+			Name: "cdrom",
+			VolumeSource: v1.VolumeSource{
+				DataVolume: &v1.DataVolumeSource{
+					Name: isoVolumeName,
+				},
+			},
+		},
+		{
+			Name: "rootdisk",
+			VolumeSource: v1.VolumeSource{
+				DataVolume: &v1.DataVolumeSource{
+					Name: name + "-rootdisk",
+				},
+			},
+		},
+		{
+			Name: "oemdrv",
+			VolumeSource: v1.VolumeSource{
+				ConfigMap: &v1.ConfigMapVolumeSource{
+					LocalObjectReference: corev1.LocalObjectReference{
+						Name: name,
+					},
+					VolumeLabel: "OEMDRV",
+				},
+			},
+		},
+	}
+}
+
+func getWindowsVirtualMachineDisks() []v1.Disk {
+	rootdisk := uint(1)
+	cdrom := uint(2)
+
+	return []v1.Disk{
+		{
+			Name: "cdrom",
+			DiskDevice: v1.DiskDevice{
+				CDRom: &v1.CDRomTarget{
+					Bus: "sata",
+				},
+			},
+			BootOrder: &cdrom,
+		},
+		{
+			Name: "rootdisk",
+			DiskDevice: v1.DiskDevice{
+				Disk: &v1.DiskTarget{},
+			},
+			BootOrder: &rootdisk,
+		},
+		{
+			Name: "virtiocontainerdisk",
+			DiskDevice: v1.DiskDevice{
+				CDRom: &v1.CDRomTarget{
+					Bus: "sata",
+				},
+			},
+		},
+		{
+			Name: "sysprep",
+			DiskDevice: v1.DiskDevice{
+				CDRom: &v1.CDRomTarget{
+					Bus: "sata",
+				},
+			},
+		},
+	}
+}
+
+func getWindowsVirtualMachineVolumes(name, isoVolumeName string) []v1.Volume {
+	return []v1.Volume{
+		{
+			Name: "cdrom",
+			VolumeSource: v1.VolumeSource{
+				DataVolume: &v1.DataVolumeSource{
+					Name: isoVolumeName,
+				},
+			},
+		},
+		{
+			Name: "rootdisk",
+			VolumeSource: v1.VolumeSource{
+				DataVolume: &v1.DataVolumeSource{
+					Name: name + "-rootdisk",
+				},
+			},
+		},
+		{
+			Name: "sysprep",
+			VolumeSource: v1.VolumeSource{
+				Sysprep: &v1.SysprepSource{
+					ConfigMap: &corev1.LocalObjectReference{
+						Name: name,
+					},
+				},
+			},
+		},
+		{
+			Name: "virtiocontainerdisk",
+			VolumeSource: v1.VolumeSource{
+				ContainerDisk: &v1.ContainerDiskSource{
+					Image: "quay.io/kubevirt/virtio-container-disk:v1.5.2",
 				},
 			},
 		},
