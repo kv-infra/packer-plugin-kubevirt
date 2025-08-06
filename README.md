@@ -19,7 +19,7 @@ To get started, see the [Packer installation guide](https://developer.hashicorp.
 
 - **HCL Templating** – Use HashiCorp Configuration Language (HCL2) for defining infrastructure as code.
 - **ISO Installation** – Build VM golden images from ISO using the `kubevirt-iso` builder.
-- **ISO Media Files** – Embed additional files into installation process (e.g., `kickstart.cfg` or `autounattend.xml`).
+- **ISO Media Files** – Embed additional files into installation process (e.g. `ks.cfg` or `unattend.xml`).
 - **Boot Command** – Automate the VM boot process using a set of commands (via a VNC connection).
 - **Integrated SSH/WinRM Access** – Allows VM provisioning and customization via SSH or WinRM.
 
@@ -33,7 +33,26 @@ To get started, see the [Packer installation guide](https://developer.hashicorp.
 
 ## Installation
 
-### Using Released Binary
+### Automatic Installation
+
+Packer supports automatic installation of the Packer plugins.
+
+To install this plugin, copy and paste this code into your Packer configuration:
+
+```hcl
+packer {
+  required_plugins {
+    kubevirt = {
+      source  = "github.com/kv-infra/kubevirt"
+      version = ">= 0.5.0"
+    }
+  }
+}
+```
+
+And now run `packer init` command. The plugin will be installed automatically.
+
+### Manual Installation
 
 Download the latest release from the [Releases](https://github.com/kv-infra/packer-plugin-kubevirt/releases) page and then install the plugin:
 
