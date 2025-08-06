@@ -18,10 +18,10 @@ To get started, see the [Packer installation guide](https://developer.hashicorp.
 ## Plugin Features
 
 - **HCL Templating** – Use HashiCorp Configuration Language (HCL2) for defining infrastructure as code.
-- **ISO-based VM Creation** – Build VM images from ISO using the `kubevirt-iso` builder.
-- **ISO Media Files** – Embed additional files into installation (e.g., `kickstart.cfg`).
-- **Automated Boot Configuration** – Automate the VM boot process using a set of commands over VNC.
-- **Integrated SSH Access** – Enable VM provisioning and customization over SSH.
+- **ISO Installation** – Build VM golden images from ISO using the `kubevirt-iso` builder.
+- **ISO Media Files** – Embed additional files into installation process (e.g., `kickstart.cfg` or `autounattend.xml`).
+- **Boot Command** – Automate the VM boot process using a set of commands (via a VNC connection).
+- **Integrated SSH/WinRM Access** – Allows VM provisioning and customization via SSH or WinRM.
 
 ## Components
 
