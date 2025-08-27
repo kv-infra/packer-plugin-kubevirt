@@ -28,20 +28,21 @@ type FlatConfig struct {
 	Preference              *string           `mapstructure:"preference" cty:"preference" hcl:"preference"`
 	PreferenceKind          *string           `mapstructure:"preference_kind" cty:"preference_kind" hcl:"preference_kind"`
 	OperatingSystemType     *string           `mapstructure:"os_type" cty:"os_type" hcl:"os_type"`
+	Networks                []FlatNetwork     `mapstructure:"networks" cty:"networks" hcl:"networks"`
 	MediaFiles              []string          `mapstructure:"media_files" cty:"media_files" hcl:"media_files"`
 	BootCommand             []string          `mapstructure:"boot_command" cty:"boot_command" hcl:"boot_command"`
 	BootWait                *string           `mapstructure:"boot_wait" cty:"boot_wait" hcl:"boot_wait"`
 	InstallationWaitTimeout *string           `mapstructure:"installation_wait_timeout" cty:"installation_wait_timeout" hcl:"installation_wait_timeout"`
 	Communicator            *string           `mapstructure:"communicator" cty:"communicator" hcl:"communicator"`
 	SSHHost                 *string           `mapstructure:"ssh_host" cty:"ssh_host" hcl:"ssh_host"`
-	SSHLocalPort            *string           `mapstructure:"ssh_local_port" cty:"ssh_local_port" hcl:"ssh_local_port"`
-	SSHRemotePort           *string           `mapstructure:"ssh_remote_port" cty:"ssh_remote_port" hcl:"ssh_remote_port"`
+	SSHLocalPort            *int              `mapstructure:"ssh_local_port" cty:"ssh_local_port" hcl:"ssh_local_port"`
+	SSHRemotePort           *int              `mapstructure:"ssh_remote_port" cty:"ssh_remote_port" hcl:"ssh_remote_port"`
 	SSHUsername             *string           `mapstructure:"ssh_username" cty:"ssh_username" hcl:"ssh_username"`
 	SSHPassword             *string           `mapstructure:"ssh_password" cty:"ssh_password" hcl:"ssh_password"`
 	SSHWaitTimeout          *string           `mapstructure:"ssh_wait_timeout" cty:"ssh_wait_timeout" hcl:"ssh_wait_timeout"`
 	WinRMHost               *string           `mapstructure:"winrm_host" cty:"winrm_host" hcl:"winrm_host"`
-	WinRMLocalPort          *string           `mapstructure:"winrm_local_port" cty:"winrm_local_port" hcl:"winrm_local_port"`
-	WinRMRemotePort         *string           `mapstructure:"winrm_remote_port" cty:"winrm_remote_port" hcl:"winrm_remote_port"`
+	WinRMLocalPort          *int              `mapstructure:"winrm_local_port" cty:"winrm_local_port" hcl:"winrm_local_port"`
+	WinRMRemotePort         *int              `mapstructure:"winrm_remote_port" cty:"winrm_remote_port" hcl:"winrm_remote_port"`
 	WinRMUsername           *string           `mapstructure:"winrm_username" cty:"winrm_username" hcl:"winrm_username"`
 	WinRMPassword           *string           `mapstructure:"winrm_password" cty:"winrm_password" hcl:"winrm_password"`
 	WinRMWaitTimeout        *string           `mapstructure:"winrm_wait_timeout" cty:"winrm_wait_timeout" hcl:"winrm_wait_timeout"`
@@ -77,23 +78,126 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"preference":                 &hcldec.AttrSpec{Name: "preference", Type: cty.String, Required: false},
 		"preference_kind":            &hcldec.AttrSpec{Name: "preference_kind", Type: cty.String, Required: false},
 		"os_type":                    &hcldec.AttrSpec{Name: "os_type", Type: cty.String, Required: false},
+		"networks":                   &hcldec.BlockListSpec{TypeName: "networks", Nested: hcldec.ObjectSpec((*FlatNetwork)(nil).HCL2Spec())},
 		"media_files":                &hcldec.AttrSpec{Name: "media_files", Type: cty.List(cty.String), Required: false},
 		"boot_command":               &hcldec.AttrSpec{Name: "boot_command", Type: cty.List(cty.String), Required: false},
 		"boot_wait":                  &hcldec.AttrSpec{Name: "boot_wait", Type: cty.String, Required: false},
 		"installation_wait_timeout":  &hcldec.AttrSpec{Name: "installation_wait_timeout", Type: cty.String, Required: false},
 		"communicator":               &hcldec.AttrSpec{Name: "communicator", Type: cty.String, Required: false},
 		"ssh_host":                   &hcldec.AttrSpec{Name: "ssh_host", Type: cty.String, Required: false},
-		"ssh_local_port":             &hcldec.AttrSpec{Name: "ssh_local_port", Type: cty.String, Required: false},
-		"ssh_remote_port":            &hcldec.AttrSpec{Name: "ssh_remote_port", Type: cty.String, Required: false},
+		"ssh_local_port":             &hcldec.AttrSpec{Name: "ssh_local_port", Type: cty.Number, Required: false},
+		"ssh_remote_port":            &hcldec.AttrSpec{Name: "ssh_remote_port", Type: cty.Number, Required: false},
 		"ssh_username":               &hcldec.AttrSpec{Name: "ssh_username", Type: cty.String, Required: false},
 		"ssh_password":               &hcldec.AttrSpec{Name: "ssh_password", Type: cty.String, Required: false},
 		"ssh_wait_timeout":           &hcldec.AttrSpec{Name: "ssh_wait_timeout", Type: cty.String, Required: false},
 		"winrm_host":                 &hcldec.AttrSpec{Name: "winrm_host", Type: cty.String, Required: false},
-		"winrm_local_port":           &hcldec.AttrSpec{Name: "winrm_local_port", Type: cty.String, Required: false},
-		"winrm_remote_port":          &hcldec.AttrSpec{Name: "winrm_remote_port", Type: cty.String, Required: false},
+		"winrm_local_port":           &hcldec.AttrSpec{Name: "winrm_local_port", Type: cty.Number, Required: false},
+		"winrm_remote_port":          &hcldec.AttrSpec{Name: "winrm_remote_port", Type: cty.Number, Required: false},
 		"winrm_username":             &hcldec.AttrSpec{Name: "winrm_username", Type: cty.String, Required: false},
 		"winrm_password":             &hcldec.AttrSpec{Name: "winrm_password", Type: cty.String, Required: false},
 		"winrm_wait_timeout":         &hcldec.AttrSpec{Name: "winrm_wait_timeout", Type: cty.String, Required: false},
+	}
+	return s
+}
+
+// FlatMultusNetwork is an auto-generated flat version of MultusNetwork.
+// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
+type FlatMultusNetwork struct {
+	NetworkName *string `mapstructure:"networkName" cty:"networkName" hcl:"networkName"`
+	Default     *bool   `mapstructure:"default,omitempty" cty:"default" hcl:"default"`
+}
+
+// FlatMapstructure returns a new FlatMultusNetwork.
+// FlatMultusNetwork is an auto-generated flat version of MultusNetwork.
+// Where the contents a fields with a `mapstructure:,squash` tag are bubbled up.
+func (*MultusNetwork) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
+	return new(FlatMultusNetwork)
+}
+
+// HCL2Spec returns the hcl spec of a MultusNetwork.
+// This spec is used by HCL to read the fields of MultusNetwork.
+// The decoded values from this spec will then be applied to a FlatMultusNetwork.
+func (*FlatMultusNetwork) HCL2Spec() map[string]hcldec.Spec {
+	s := map[string]hcldec.Spec{
+		"networkName": &hcldec.AttrSpec{Name: "networkName", Type: cty.String, Required: false},
+		"default":     &hcldec.AttrSpec{Name: "default", Type: cty.Bool, Required: false},
+	}
+	return s
+}
+
+// FlatNetwork is an auto-generated flat version of Network.
+// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
+type FlatNetwork struct {
+	Name   *string            `mapstructure:"name" cty:"name" hcl:"name"`
+	Pod    *FlatPodNetwork    `mapstructure:"pod" cty:"pod" hcl:"pod"`
+	Multus *FlatMultusNetwork `mapstructure:"multus" cty:"multus" hcl:"multus"`
+}
+
+// FlatMapstructure returns a new FlatNetwork.
+// FlatNetwork is an auto-generated flat version of Network.
+// Where the contents a fields with a `mapstructure:,squash` tag are bubbled up.
+func (*Network) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
+	return new(FlatNetwork)
+}
+
+// HCL2Spec returns the hcl spec of a Network.
+// This spec is used by HCL to read the fields of Network.
+// The decoded values from this spec will then be applied to a FlatNetwork.
+func (*FlatNetwork) HCL2Spec() map[string]hcldec.Spec {
+	s := map[string]hcldec.Spec{
+		"name":   &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
+		"pod":    &hcldec.BlockSpec{TypeName: "pod", Nested: hcldec.ObjectSpec((*FlatPodNetwork)(nil).HCL2Spec())},
+		"multus": &hcldec.BlockSpec{TypeName: "multus", Nested: hcldec.ObjectSpec((*FlatMultusNetwork)(nil).HCL2Spec())},
+	}
+	return s
+}
+
+// FlatNetworkSource is an auto-generated flat version of NetworkSource.
+// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
+type FlatNetworkSource struct {
+	Pod    *FlatPodNetwork    `mapstructure:"pod" cty:"pod" hcl:"pod"`
+	Multus *FlatMultusNetwork `mapstructure:"multus" cty:"multus" hcl:"multus"`
+}
+
+// FlatMapstructure returns a new FlatNetworkSource.
+// FlatNetworkSource is an auto-generated flat version of NetworkSource.
+// Where the contents a fields with a `mapstructure:,squash` tag are bubbled up.
+func (*NetworkSource) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
+	return new(FlatNetworkSource)
+}
+
+// HCL2Spec returns the hcl spec of a NetworkSource.
+// This spec is used by HCL to read the fields of NetworkSource.
+// The decoded values from this spec will then be applied to a FlatNetworkSource.
+func (*FlatNetworkSource) HCL2Spec() map[string]hcldec.Spec {
+	s := map[string]hcldec.Spec{
+		"pod":    &hcldec.BlockSpec{TypeName: "pod", Nested: hcldec.ObjectSpec((*FlatPodNetwork)(nil).HCL2Spec())},
+		"multus": &hcldec.BlockSpec{TypeName: "multus", Nested: hcldec.ObjectSpec((*FlatMultusNetwork)(nil).HCL2Spec())},
+	}
+	return s
+}
+
+// FlatPodNetwork is an auto-generated flat version of PodNetwork.
+// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
+type FlatPodNetwork struct {
+	VMNetworkCIDR     *string `mapstructure:"vmNetworkCIDR,omitempty" cty:"vmNetworkCIDR" hcl:"vmNetworkCIDR"`
+	VMIPv6NetworkCIDR *string `mapstructure:"vmIPv6NetworkCIDR,omitempty" cty:"vmIPv6NetworkCIDR" hcl:"vmIPv6NetworkCIDR"`
+}
+
+// FlatMapstructure returns a new FlatPodNetwork.
+// FlatPodNetwork is an auto-generated flat version of PodNetwork.
+// Where the contents a fields with a `mapstructure:,squash` tag are bubbled up.
+func (*PodNetwork) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
+	return new(FlatPodNetwork)
+}
+
+// HCL2Spec returns the hcl spec of a PodNetwork.
+// This spec is used by HCL to read the fields of PodNetwork.
+// The decoded values from this spec will then be applied to a FlatPodNetwork.
+func (*FlatPodNetwork) HCL2Spec() map[string]hcldec.Spec {
+	s := map[string]hcldec.Spec{
+		"vmNetworkCIDR":     &hcldec.AttrSpec{Name: "vmNetworkCIDR", Type: cty.String, Required: false},
+		"vmIPv6NetworkCIDR": &hcldec.AttrSpec{Name: "vmIPv6NetworkCIDR", Type: cty.String, Required: false},
 	}
 	return s
 }

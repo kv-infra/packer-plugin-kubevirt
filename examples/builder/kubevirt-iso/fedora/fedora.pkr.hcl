@@ -32,6 +32,23 @@ source "kubevirt-iso" "fedora" {
   preference_kind    = "virtualmachineclusterpreference" # or "virtualmachinepreference"
   os_type            = "linux"
 
+  # Default network configuration
+  networks {
+    name = "default"
+
+    pod {}
+  }
+
+  # Network configuration using Multus CNI
+  networks {
+    name = "net1"
+
+    multus {
+      networkName = "multus-01"
+      default = false
+    }
+  }
+
   # Files to include in the ISO installation
   media_files = [
     "./ks.cfg"

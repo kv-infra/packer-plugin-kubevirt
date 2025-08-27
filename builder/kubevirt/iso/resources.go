@@ -46,9 +46,13 @@ func virtualMachine(
 	preferenceName,
 	instanceTypeKind,
 	preferenceKind,
-	osType string) *v1.VirtualMachine {
+	osType string,
+	networks []Network) *v1.VirtualMachine {
 	var disks []v1.Disk
 	var volumes []v1.Volume
+
+	vmNetworks := make([]v1.Network, len(networks))
+	vmInterfaces := make([]v1.Interface, len(networks))
 
 	if instanceTypeKind == "" {
 		instanceTypeKind = instancetypeapi.ClusterSingularResourceName
@@ -66,6 +70,10 @@ func virtualMachine(
 	if osType == "windows" {
 		disks = getWindowsVirtualMachineDisks()
 		volumes = getWindowsVirtualMachineVolumes(name, isoVolumeName)
+	}
+
+	for i, n := range networks {
+		vmNetworks[i], vmInterfaces[i] = convertToNetwork(n)
 	}
 
 	return &v1.VirtualMachine{
@@ -108,9 +116,11 @@ func virtualMachine(
 			},
 			Template: &v1.VirtualMachineInstanceTemplateSpec{
 				Spec: v1.VirtualMachineInstanceSpec{
+					Networks: vmNetworks,
 					Domain: v1.DomainSpec{
 						Devices: v1.Devices{
-							Disks: disks,
+							Interfaces: vmInterfaces,
+							Disks:      disks,
 						},
 					},
 					Volumes: volumes,
@@ -315,4 +325,27 @@ func getWindowsVirtualMachineVolumes(name, isoVolumeName string) []v1.Volume {
 			},
 		},
 	}
+}
+
+func convertToNetwork(n Network) (v1.Network, v1.Interface) {
+	vmNetwork := v1.Network{Name: n.Name}
+	vmInterface := v1.Interface{Name: n.Name}
+
+	switch {
+	case n.Pod != nil:
+		// Pod network, and masquerade interface.
+		vmNetwork.NetworkSource.Pod = &v1.PodNetwork{
+			VMNetworkCIDR:     n.Pod.VMNetworkCIDR,
+			VMIPv6NetworkCIDR: n.Pod.VMIPv6NetworkCIDR,
+		}
+		vmInterface.InterfaceBindingMethod.Masquerade = &v1.InterfaceMasquerade{}
+	case n.Multus != nil:
+		// Multus network, and bridge interface.
+		vmNetwork.NetworkSource.Multus = &v1.MultusNetwork{
+			NetworkName: n.Multus.NetworkName,
+			Default:     n.Multus.Default,
+		}
+		vmInterface.InterfaceBindingMethod.Bridge = &v1.InterfaceBridge{}
+	}
+	return vmNetwork, vmInterface
 }
