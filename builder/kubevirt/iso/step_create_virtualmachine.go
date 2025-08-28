@@ -69,6 +69,12 @@ func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
 	name := s.config.Name
 	namespace := s.config.Namespace
+	keepVM := s.config.KeepVM
+
+	if keepVM {
+		ui.Sayf("Keeping VirutalMachine (%s/%s).", namespace, name)
+		return
+	}
 
 	ui.Sayf("Deleting VirutalMachine (%s/%s)...", namespace, name)
 

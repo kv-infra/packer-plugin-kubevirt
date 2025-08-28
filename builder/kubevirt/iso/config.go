@@ -90,6 +90,9 @@ type Config struct {
 	WinRMUsername           string        `mapstructure:"winrm_username"`
 	WinRMPassword           string        `mapstructure:"winrm_password"`
 	WinRMWaitTimeout        time.Duration `mapstructure:"winrm_wait_timeout"`
+
+	// Keep the temporary VM after the build
+	KeepVM bool `mapstructure:"keep_vm"`
 }
 
 func (c *Config) Prepare(raws ...interface{}) ([]string, error) {

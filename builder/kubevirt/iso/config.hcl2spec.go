@@ -46,6 +46,7 @@ type FlatConfig struct {
 	WinRMUsername           *string           `mapstructure:"winrm_username" cty:"winrm_username" hcl:"winrm_username"`
 	WinRMPassword           *string           `mapstructure:"winrm_password" cty:"winrm_password" hcl:"winrm_password"`
 	WinRMWaitTimeout        *string           `mapstructure:"winrm_wait_timeout" cty:"winrm_wait_timeout" hcl:"winrm_wait_timeout"`
+	KeepVM                  *bool             `mapstructure:"keep_vm" cty:"keep_vm" hcl:"keep_vm"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -96,6 +97,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"winrm_username":             &hcldec.AttrSpec{Name: "winrm_username", Type: cty.String, Required: false},
 		"winrm_password":             &hcldec.AttrSpec{Name: "winrm_password", Type: cty.String, Required: false},
 		"winrm_wait_timeout":         &hcldec.AttrSpec{Name: "winrm_wait_timeout", Type: cty.String, Required: false},
+		"keep_vm":                    &hcldec.AttrSpec{Name: "keep_vm", Type: cty.Bool, Required: false},
 	}
 	return s
 }
