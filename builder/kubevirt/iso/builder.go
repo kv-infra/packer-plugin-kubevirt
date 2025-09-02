@@ -5,7 +5,7 @@ package iso
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	ssh "golang.org/x/crypto/ssh"
 
@@ -40,21 +40,24 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
 	}
 
 	kubeConfig := b.config.KubeConfig
+	if kubeConfig == "" {
+		return nil, warnings, fmt.Errorf("KUBECONFIG environment variable is not set")
+	}
 
 	client, err := kubecli.GetKubevirtClientFromFlags("", kubeConfig)
 	if err != nil {
-		log.Panicln(err)
+		return nil, warnings, fmt.Errorf("failed to get kubevirt client: %w", err)
 	}
 	b.client = client
 
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfig)
 	if err != nil {
-		log.Panicln(err)
+		return nil, warnings, fmt.Errorf("failed to build kubeconfig: %w", err)
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Panicln(err)
+		return nil, warnings, fmt.Errorf("failed to create Kubernetes clientset: %w", err)
 	}
 	b.clientset = clientset
 	return nil, warnings, nil
