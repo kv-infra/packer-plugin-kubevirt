@@ -51,7 +51,7 @@ func (s *StepCreateVirtualMachine) Run(ctx context.Context, state multistep.Stat
 		osType,
 		networks)
 
-	ui.Sayf("Creating a new temporary VirutalMachine (%s/%s)...", namespace, name)
+	ui.Sayf("Creating a new temporary VirtualMachine (%s/%s)...", namespace, name)
 
 	_, err := s.client.VirtualMachine(namespace).Create(ctx, virtualMachine, metav1.CreateOptions{})
 	if err != nil {
@@ -72,11 +72,11 @@ func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 	keepVM := s.config.KeepVM
 
 	if keepVM {
-		ui.Sayf("Keeping VirutalMachine (%s/%s).", namespace, name)
+		ui.Sayf("Keeping VirtualMachine (%s/%s).", namespace, name)
 		return
 	}
 
-	ui.Sayf("Deleting VirutalMachine (%s/%s)...", namespace, name)
+	ui.Sayf("Deleting VirtualMachine (%s/%s)...", namespace, name)
 
 	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{
 		GracePeriodSeconds: ptr.To(int64(0)),
