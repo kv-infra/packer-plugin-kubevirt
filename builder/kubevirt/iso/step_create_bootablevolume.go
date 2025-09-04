@@ -42,11 +42,13 @@ func (s *StepCreateBootableVolume) Run(ctx context.Context, state multistep.Stat
 		return multistep.ActionHalt
 	}
 
-	_, err = s.client.CdiClient().CdiV1beta1().DataSources(namespace).Create(ctx, sourceVolume, metav1.CreateOptions{})
+	ds, err := s.client.CdiClient().CdiV1beta1().DataSources(namespace).Create(ctx, sourceVolume, metav1.CreateOptions{})
 	if err != nil {
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
+
+	state.Put("bootable_volume_name", ds.Name)
 	return multistep.ActionContinue
 }
 

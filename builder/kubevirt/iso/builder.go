@@ -122,7 +122,12 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 
 	b.runner = commonsteps.NewRunner(steps, b.config.PackerConfig, ui)
 	b.runner.Run(ctx, state)
-	return nil, nil
+
+	bootableVolumeName, ok := state.Get("bootable_volume_name").(string)
+	if !ok || bootableVolumeName == "" {
+		return nil, fmt.Errorf("bootable volume name not found in state")
+	}
+	return &Artifact{Name: bootableVolumeName}, nil
 }
 
 func (b *Builder) buildSSHSteps() ([]multistep.Step, []error) {
