@@ -47,5 +47,5 @@ func (s *StepCopyMediaFiles) Cleanup(state multistep.StateBag) {
 
 	ui.Sayf("Deleting ConfigMap (%s/%s)...", namespace, name)
 
-	s.client.CoreV1().ConfigMaps(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
+	_ = s.client.CoreV1().ConfigMaps(namespace).Delete(context.Background(), name, metav1.DeleteOptions{})
 }

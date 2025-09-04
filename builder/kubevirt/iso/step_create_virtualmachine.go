@@ -78,7 +78,7 @@ func (s *StepCreateVirtualMachine) Cleanup(state multistep.StateBag) {
 
 	ui.Sayf("Deleting VirtualMachine (%s/%s)...", namespace, name)
 
-	s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{
+	_ = s.client.VirtualMachine(namespace).Delete(context.Background(), name, metav1.DeleteOptions{
 		GracePeriodSeconds: ptr.To(int64(0)),
 	})
 }
