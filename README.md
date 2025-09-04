@@ -44,7 +44,7 @@ packer {
   required_plugins {
     kubevirt = {
       source  = "github.com/kv-infra/kubevirt"
-      version = ">= 0.6.0"
+      version = ">= 0.7.0"
     }
   }
 }
@@ -65,7 +65,7 @@ $ packer plugins install --path packer-plugin-kubevirt github.com/kv-infra/kubev
 Clone the repository and build the plugin from the root directory:
 
 ```shell
-$ go build -ldflags="-X github.com/kv-infra/packer-plugin-kubevirt/version.Version=0.6.0" -o packer-plugin-kubevirt
+$ go build -ldflags="-X github.com/kv-infra/packer-plugin-kubevirt/version.Version=0.7.0" -o packer-plugin-kubevirt
 ```
 
 Then install the compiled plugin:
