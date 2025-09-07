@@ -1,3 +1,10 @@
+# Deprecated
+
+This repository has been migrated to the official [HashiCorp organization](https://github.com/hashicorp/packer-plugin-kubevirt)
+and is no longer maintained here.
+
+---
+
 # Packer Plugin KubeVirt
 
 The `KubeVirt` plugin can be used with [HashiCorp Packer](https://www.packer.io) to create KubeVirt images.
